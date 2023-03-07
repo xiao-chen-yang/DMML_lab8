@@ -154,10 +154,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="exercise-1-tasks-2-7-in-lecture-notes" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">2</span> Exercise 1: Tasks 2-7 in lecture notes<a href="exercise-1-tasks-2-7-in-lecture-notes.html#exercise-1-tasks-2-7-in-lecture-notes" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>In Example 3 of Week 8 lecture note, we have performed HAC on <code>USArrests</code> data using the following commands.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb1-1" aria-hidden="true" tabindex="-1"></a>USArrests <span class="ot">&lt;-</span> <span class="fu">scale</span>(USArrests)</span>
-<span id="cb1-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb1-2" aria-hidden="true" tabindex="-1"></a>usarrests.clus <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">dist</span>(USArrests)) </span>
-<span id="cb1-3"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.dendrogram</span>(usarrests.clus,<span class="at">hang =</span> <span class="dv">0</span>),<span class="at">ylab=</span><span class="st">&quot;complete linkage&quot;</span>,</span>
-<span id="cb1-4"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb1-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Euclidean distance&quot;</span>,<span class="at">horiz=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb6-1" aria-hidden="true" tabindex="-1"></a>USArrests <span class="ot">&lt;-</span> <span class="fu">scale</span>(USArrests)</span>
+<span id="cb6-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb6-2" aria-hidden="true" tabindex="-1"></a>usarrests.clus <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">dist</span>(USArrests)) </span>
+<span id="cb6-3"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.dendrogram</span>(usarrests.clus,<span class="at">hang =</span> <span class="dv">0</span>),<span class="at">ylab=</span><span class="st">&quot;complete linkage&quot;</span>,</span>
+<span id="cb6-4"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb6-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Euclidean distance&quot;</span>,<span class="at">horiz=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:USdend"></span>
 <img src="main_files/figure-html/USdend-1.png" alt="Dendrogram resulting from HAC on USArrests dataset" width="1296" />
 <p class="caption">
@@ -173,7 +173,7 @@ Figure 2.1: Dendrogram resulting from HAC on USArrests dataset
 Solution
 </button>
 <p>The <code>merge</code> component of the <code>hclust</code> fitted object gives us an <span class="math inline">\(n-1\)</span> by 2 matrix. Let's have a look at it:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(usarrests.clus<span class="sc">$</span>merge)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(usarrests.clus<span class="sc">$</span>merge)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]  -15  -29
 ## [2,]  -13  -32
@@ -183,10 +183,11 @@ Solution
 ## [6,]  -20  -31</code></pre>
 <p>Row <span class="math inline">\(i\)</span> of <code>merge</code> describes the merging of clusters at step <span class="math inline">\(i\)</span> of the clustering. If an element <span class="math inline">\(j\)</span> in the row is negative, then observation <span class="math inline">\(j\)</span> was merged at this stage. If <span class="math inline">\(j\)</span> is positive then the merge was with the cluster formed at the (earlier) stage <span class="math inline">\(j\)</span> of the algorithm. Thus negative entries in <code>merge</code> indicate agglomerations of observations (i.e. singleton clusters), and positive entries indicate agglomerations of non-singletons clusters.</p>
 <p>Looking at the first row, we can see that the <span class="math inline">\(15\)</span>th and <span class="math inline">\(29\)</span>th observations were merged together. These are Iowa and New Hampshire respectively.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(USArrests)[<span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">29</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(USArrests)[<span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">29</span>)]</span></code></pre></div>
 <pre><code>## [1] &quot;Iowa&quot;          &quot;New Hampshire&quot;</code></pre>
 <p>Note that the 5th row of the merge matrix has a positive number 3 in it. This means that observation 36 (indicated by a -36) is joined to the cluster created in row 3, i.e. observations 14 and 16. So the row creates a cluster of three observations: 36, 14 and 16.</p>
 </div>
+<p><br></p>
 <p><strong>TASK 2</strong>: Let’s say that we now want to focus on the cluster containing the states New Hampshire, Iowa and Maine. Which cluster is the most similar to that one?</p>
 <div class="webex-solution">
 <button>
@@ -195,10 +196,10 @@ Solution
 <p>It's the cluster containing Nebraska, Montana and Idaho. It would be wrong if your answer was the singleton state of Idaho. Because that (singleton) cluster is first merged together with the cluster of Nebraska and Montana, and the new cluster (comprised of Nebraska, Montana and Idaho) is merged together with the cluster of New Hampshire, Iowa and Maine.</p>
 </div>
 <p>In Example 4, we allocate the observations to three clusters by using <code>cutree</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dendextend)</span>
-<span id="cb6-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb6-2" aria-hidden="true" tabindex="-1"></a>dend_usarrests <span class="ot">&lt;-</span> <span class="fu">as.dendrogram</span>(usarrests.clus,<span class="at">hang=</span><span class="dv">0</span>)</span>
-<span id="cb6-3"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb6-3" aria-hidden="true" tabindex="-1"></a>allocations <span class="ot">&lt;-</span> <span class="fu">cutree</span>(dend_usarrests,<span class="at">k=</span><span class="dv">3</span>)</span>
-<span id="cb6-4"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(allocations)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dendextend)</span>
+<span id="cb11-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb11-2" aria-hidden="true" tabindex="-1"></a>dend_usarrests <span class="ot">&lt;-</span> <span class="fu">as.dendrogram</span>(usarrests.clus,<span class="at">hang=</span><span class="dv">0</span>)</span>
+<span id="cb11-3"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb11-3" aria-hidden="true" tabindex="-1"></a>allocations <span class="ot">&lt;-</span> <span class="fu">cutree</span>(dend_usarrests,<span class="at">k=</span><span class="dv">3</span>)</span>
+<span id="cb11-4"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(allocations)</span></code></pre></div>
 <pre><code>##    Alabama     Alaska    Arizona   Arkansas California   Colorado 
 ##          1          1          2          3          2          2</code></pre>
 <p><strong>TASK 4</strong>: How could we get the names for the members of the third cluster?</p>
@@ -213,7 +214,7 @@ Hint
 Solution
 </button>
 <p>One way to do it is the following:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(USArrests)[allocations<span class="sc">==</span><span class="dv">3</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(USArrests)[allocations<span class="sc">==</span><span class="dv">3</span>]</span></code></pre></div>
 <pre><code>##  [1] &quot;Arkansas&quot;      &quot;Connecticut&quot;   &quot;Delaware&quot;      &quot;Hawaii&quot;       
 ##  [5] &quot;Idaho&quot;         &quot;Indiana&quot;       &quot;Iowa&quot;          &quot;Kansas&quot;       
 ##  [9] &quot;Kentucky&quot;      &quot;Maine&quot;         &quot;Massachusetts&quot; &quot;Minnesota&quot;    
@@ -223,6 +224,7 @@ Solution
 ## [25] &quot;Utah&quot;          &quot;Vermont&quot;       &quot;Virginia&quot;      &quot;Washington&quot;   
 ## [29] &quot;West Virginia&quot; &quot;Wisconsin&quot;     &quot;Wyoming&quot;</code></pre>
 </div>
+<p><br></p>
 <p><strong>TASK 5</strong>: Based on Figure <a href="exercise-1-tasks-2-7-in-lecture-notes.html#fig:USdend">2.1</a>, determine how many clusters you would obtain if you cut the dendrogram at the heights 2.9 and 2.</p>
 <ul>
 <li>If the dendrogram is cut at height 2.9, <input class='webex-solveme nospaces' size='1' data-answer='["6"]'/> clusters will be obtained.</li>
@@ -233,15 +235,16 @@ Solution
 Solution
 </button>
 <p>In the first case (i.e. cutting the tree at 2.9) we would end up with 6 clusters while in the second case (i.e. cutting the tree at 2) we would end up with 11 clusters. This is a result of Alaska being a singleton cluster that is merged after those heights. It can be verified in <code>R</code> either quantitatively or visually by using the commands below.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dendextend)</span>
-<span id="cb10-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb10-2" aria-hidden="true" tabindex="-1"></a>usarrests.clus <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">dist</span>(USArrests))</span>
-<span id="cb10-3"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb10-3" aria-hidden="true" tabindex="-1"></a>dend_usarrests <span class="ot">&lt;-</span> <span class="fu">as.dendrogram</span>(usarrests.clus)</span>
-<span id="cb10-4"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">cutree</span>(dend_usarrests,<span class="at">h=</span><span class="dv">2</span>))</span>
-<span id="cb10-5"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb10-5" aria-hidden="true" tabindex="-1"></a>dendrogram_cut_2height <span class="ot">&lt;-</span> <span class="fu">color_branches</span>(dend_usarrests,<span class="at">h=</span><span class="dv">2</span>)</span>
-<span id="cb10-6"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dendrogram_cut_2height,<span class="at">ylab=</span><span class="st">&quot;complete linkage&quot;</span>,</span>
-<span id="cb10-7"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb10-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Euclidean distance&quot;</span>,<span class="at">horiz=</span><span class="cn">TRUE</span>)</span>
-<span id="cb10-8"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dendextend)</span>
+<span id="cb15-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb15-2" aria-hidden="true" tabindex="-1"></a>usarrests.clus <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">dist</span>(USArrests))</span>
+<span id="cb15-3"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb15-3" aria-hidden="true" tabindex="-1"></a>dend_usarrests <span class="ot">&lt;-</span> <span class="fu">as.dendrogram</span>(usarrests.clus)</span>
+<span id="cb15-4"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">cutree</span>(dend_usarrests,<span class="at">h=</span><span class="dv">2</span>))</span>
+<span id="cb15-5"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb15-5" aria-hidden="true" tabindex="-1"></a>dendrogram_cut_2height <span class="ot">&lt;-</span> <span class="fu">color_branches</span>(dend_usarrests,<span class="at">h=</span><span class="dv">2</span>)</span>
+<span id="cb15-6"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dendrogram_cut_2height,<span class="at">ylab=</span><span class="st">&quot;complete linkage&quot;</span>,</span>
+<span id="cb15-7"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb15-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Euclidean distance&quot;</span>,<span class="at">horiz=</span><span class="cn">TRUE</span>)</span>
+<span id="cb15-8"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 </div>
+<p><br></p>
 
 </div>
 <script>

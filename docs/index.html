@@ -29,7 +29,7 @@
   
   
 
-<link rel="next" href="exercise-1-tasks-3-7-in-lecture-notes.html"/>
+<link rel="next" href="exercise-1-tasks-2-7-in-lecture-notes.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -133,7 +133,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to DMML Lab 8</a></li>
-<li class="chapter" data-level="2" data-path="exercise-1-tasks-3-7-in-lecture-notes.html"><a href="exercise-1-tasks-3-7-in-lecture-notes.html"><i class="fa fa-check"></i><b>2</b> Exercise 1: Tasks 3-7 in lecture notes</a></li>
+<li class="chapter" data-level="2" data-path="exercise-1-tasks-2-7-in-lecture-notes.html"><a href="exercise-1-tasks-2-7-in-lecture-notes.html"><i class="fa fa-check"></i><b>2</b> Exercise 1: Tasks 2-7 in lecture notes</a></li>
 </ul>
 
       </nav>
@@ -160,10 +160,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The command for hierarchical agglomerative clustering is <code>hclust</code>. Setting the method argument selects the linkage method. It takes as its first argument a distance matrix. The distance matrix can be created using the command <code>dist</code> (default method is Euclidean distance).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">dist</span>(data,<span class="at">method=</span><span class="st">&quot;euclidian&quot;</span>)</span>
 <span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a>hiclust <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d, <span class="at">method=</span><span class="st">&quot;single&quot;</span>)</span></code></pre></div>
-<p>To plot the resulting dendrogram, the plot command is used on the <code>hclust</code> fitted object. If the dendrogram suggests <span class="math inline">\(g\)</span> clusters, we could determine the cluster assignment by using the command <code>cutree</code> with argument <code>k</code> set to <code>g</code>. Alternatively, if the dendrogram should be cut at height <span class="math inline">\(l\)</span>, we could set the argument <code>h</code> to <code>l</code>. The result will be a vector with length equal to the number of observations, each entry identifying which cluster the corresponding object is assigned to.</p>
+<p>To plot the resulting dendrogram, the plot command is used on the <code>hclust</code> fitted object. If the dendrogram suggests <span class="math inline">\(g\)</span> clusters, we could determine the cluster assignment by using the command <code>cutree</code> within the <code>dendextend</code> package with argument <code>k</code> set to <code>g</code>. Alternatively, if the dendrogram should be cut at height <span class="math inline">\(l\)</span>, we could set the argument <code>h</code> to <code>l</code>. The result will be a vector with length equal to the number of observations, each entry identifying which cluster the corresponding object is assigned to.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hiclust)</span>
-<span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hiclust, <span class="at">k=</span><span class="dv">3</span>)</span>
-<span id="cb2-3"><a href="index.html#cb2-3" aria-hidden="true" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hiclust, <span class="at">h=</span><span class="dv">20</span>)</span></code></pre></div>
+<span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dendextend)</span>
+<span id="cb2-3"><a href="index.html#cb2-3" aria-hidden="true" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hiclust, <span class="at">k=</span><span class="dv">3</span>)</span>
+<span id="cb2-4"><a href="index.html#cb2-4" aria-hidden="true" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hiclust, <span class="at">h=</span><span class="dv">20</span>)</span></code></pre></div>
 <p>It is sometimes also helpful to visualise the data giving different colours to observations belonging to different clusters. This can be done by using the function <code>color_branches</code> within the <code>dendextend</code> package.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dendextend)</span>
 <span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true" tabindex="-1"></a>dend <span class="ot">&lt;-</span> <span class="fu">as.dendrogram</span>(hiclust,<span class="at">hang=</span><span class="dv">0</span>)</span>
@@ -357,7 +358,7 @@ window.onload = function() {
         </div>
       </div>
 
-<a href="exercise-1-tasks-3-7-in-lecture-notes.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="exercise-1-tasks-2-7-in-lecture-notes.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

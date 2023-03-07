@@ -1,4 +1,3 @@
-welcome-to-dmml-lab-8
-exercise-1-tasks-3-7-in-lecture-notes
-exercise-1-tasks-2-7-in-lecture-notes
 fig:USdend
+welcome-to-dmml-lab-8
+exercise-1-tasks-2-7-in-lecture-notes
