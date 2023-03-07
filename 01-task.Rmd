@@ -1,0 +1,78 @@
+# Exercise 1: Tasks 2-7 in lecture notes
+
+In Example 3 of Week 8 lecture note, we have performed HAC on `USArrests` data using the following commands.
+```{r USdend, fig.cap="Dendrogram resulting from HAC on USArrests dataset", fig.height=11, fig.width=13.5}
+USArrests <- scale(USArrests)
+usarrests.clus <- hclust(dist(USArrests)) 
+plot(as.dendrogram(usarrests.clus,hang = 0),ylab="complete linkage",
+     xlab="Euclidean distance",horiz=TRUE)
+```
+
+Note that in the above `R` code, we start by scaling/standardising the data using the function `scale`. This is important as we don’t want the clustering algorithm to depend to an arbitrary variable unit.
+
+Reading the dendrogram from the right to the left, we see that New Hampshire and Iowa seem to be the first two leaves that constitute a clade. Therefore, we can conclude that New Hampshire and Iowa are most similar to each other. 
+<br>
+
+**TASK 3**: Instead of reading from the dendrogram, can you find a way to check that New Hampshire and Iowa are the first two leaves that constitute a clade? Hint: Have a look at `usarrests.clus$merge` and `?hclust`.
+`r hide("Solution")`
+The `merge` component of the `hclust` fitted object gives us an $n-1$ by 2 matrix. Let's have a look at it:
+```{r, echo=TRUE}
+head(usarrests.clus$merge)
+```
+Row $i$ of `merge` describes the merging of clusters at step $i$ of the clustering. If an element $j$ in the row is negative, then observation $j$ was merged at this stage. If $j$ is positive then the merge was with the cluster formed at the (earlier) stage $j$ of the algorithm. Thus negative entries in `merge` indicate agglomerations of observations (i.e. singleton clusters), and positive entries indicate agglomerations of non-singletons clusters.
+
+Looking at the first row, we can see that the $15$th and $29$th observations were merged together. These are Iowa and New Hampshire respectively.
+```{r}
+rownames(USArrests)[c(15,29)]
+```
+
+Note that the 5th row of the merge matrix has a positive number 3 in it. This means that observation 36 (indicated by a -36) is joined to the cluster created in row 3, i.e. observations 14 and 16. So the row creates a cluster of three observations: 36, 14 and 16.
+`r unhide()`
+<br>
+
+**TASK 2**: Let’s say that we now want to focus on the cluster containing the states New Hampshire, Iowa and Maine. Which cluster is the most similar to that one?
+`r hide("Solution")`
+It's the cluster containing Nebraska, Montana and Idaho. It would be wrong if your answer was the singleton state of Idaho. Because that (singleton) cluster is first merged together with the cluster of Nebraska and Montana, and the new cluster (comprised of Nebraska, Montana and Idaho) is merged together with the cluster of New Hampshire, Iowa and Maine. 
+`r unhide()`
+
+In Example 4, we allocate the observations to three clusters by using `cutree`.
+```{r warning=FALSE, message=FALSE}
+library(dendextend)
+dend_usarrests <- as.dendrogram(usarrests.clus,hang=0)
+allocations <- cutree(dend_usarrests,k=3)
+head(allocations)
+```
+
+**TASK 4**: How could we get the names for the members of the third cluster?
+`r hide("Hint")`
+Names of US states are given as row names of the dataset, which can be found by using `row.names(data)`. Observations that belong to the third cluster can be found by using the condition `[allocation==3]`.
+`r unhide()`
+
+`r hide("Solution")`
+One way to do it is the following:
+```{r}
+rownames(USArrests)[allocations==3]
+```
+`r unhide()`
+<br>
+
+**TASK 5**: Based on Figure \@ref(fig:USdend), determine how many clusters you would obtain if you cut the dendrogram at the heights 2.9 and 2.
+
+* If the dendrogram is cut at height 2.9, `r fitb(6)` clusters will be obtained. 
+* If the dendrogram is cut at height 2, `r fitb(11)` clusters will be obtained. 
+
+`r hide("Solution")`
+In the first case (i.e. cutting the tree at 2.9) we would end up with 6 clusters while in the second case (i.e. cutting the tree at 2) we would end up with 11 clusters. This is a result of Alaska being a singleton cluster that is merged after those heights. It can be verified in `R` either quantitatively or visually by using the commands below.
+
+```{r eval=FALSE, echo=TRUE}
+library(dendextend)
+usarrests.clus <- hclust(dist(USArrests))
+dend_usarrests <- as.dendrogram(usarrests.clus)
+table(cutree(dend_usarrests,h=2))
+dendrogram_cut_2height <- color_branches(dend_usarrests,h=2)
+plot(dendrogram_cut_2height,ylab="complete linkage",
+     xlab="Euclidean distance",horiz=TRUE)
+abline(v=2,lty=2,lwd=2)
+```
+`r unhide()`
+<br>

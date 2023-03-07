@@ -1,0 +1,69 @@
+---
+title: "STATS5099 Data Mining and Machine Learning"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+biblio-style: apalike
+link-citations: yes
+---
+
+```{r setup, include = FALSE}
+library(webexercises)
+library(tinytex)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+knitr::opts_chunk$set(echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+
+library(dendextend)
+```
+
+
+```{r include=FALSE, echo=FALSE}
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+
+# Welcome to DMML Lab 8
+
+In week 8, we learned about performing clustering by using hierarchical agglomerative clustering (HAC), visualising HAC via dendrograms, and selecting the optimal number of clusters according to the silhouette width. 
+
+The command for hierarchical agglomerative clustering is `hclust`. Setting the method argument selects the linkage method. It takes as its first argument a distance matrix. The distance matrix can be created using the command `dist` (default method is Euclidean distance).
+```{r eval=FALSE}
+d <- dist(data,method="euclidian")
+hiclust <- hclust(d, method="single")
+```
+
+To plot the resulting dendrogram, the plot command is used on the `hclust` fitted object. If the dendrogram suggests $g$  clusters, we could determine the cluster assignment by using the command `cutree` within the `dendextend` package with argument `k` set to `g`. Alternatively, if the dendrogram should be cut at height $l$, we could set the argument `h` to `l`. The result will be a vector with length equal to the number of observations, each entry identifying which cluster the corresponding object is assigned to.
+```{r eval=FALSE}
+plot(hiclust)
+library(dendextend)
+clusters <- cutree(hiclust, k=3)
+clusters <- cutree(hiclust, h=20)
+```
+
+It is sometimes also helpful to visualise the data giving different colours to observations belonging to different clusters. This can be done by using the function `color_branches` within the `dendextend` package. 
+```{r eval=FALSE}
+library(dendextend)
+dend <- as.dendrogram(hiclust,hang=0)
+dend_cut_3clusters <- color_branches(dend,k=3) #3 clusters
+plot(dend_cut_3clusters, horiz=TRUE)
+```
+
+To determine the optimal number of clusters and/or assess the performance of clustering algorithms, silhouette plots can be used. The silhouette value ranges from −1 to 1, where a high value indicates that the object is well matched to its own cluster and poorly matched to neighbouring clusters. In `R`, we could either use the function `silhouette` after clustering. 
+```{r eval=FALSE}
+d <- dist(data,method="euclidian")
+hiclust <- hclust(d, method="single")
+clusters <- cutree(hiclust, k=2)
+plot(silhouette(clusters), dist(data), col=1:2)
+```
+
+The function `fviz_nbclust` from the package `factoextra` can produce a plot of the average silhouette width against the number of clusters, which helps determine the optimal number of clusters. We would have to use the `FUN=hcut` argument to specify hierarchical clustering.
+```{r eval=FALSE}
+library(factoextra)
+ggplot_fviz <-fviz_nbclust(USArrests,FUN=hcut,method = "silhouette")
+ggplot_fviz
+```
+
