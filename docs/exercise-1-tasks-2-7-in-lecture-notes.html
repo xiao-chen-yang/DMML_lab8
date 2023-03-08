@@ -245,6 +245,76 @@ Solution
 <span id="cb15-8"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 </div>
 <p><br></p>
+<p><strong>TASK 7</strong>: Assume that you have information that Florida and Illinois should be clustered together and at the same time that Florida and Colorado should be in different clusters. What can you do to make this happen?</p>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<p>Looking at the dendrogram, you would have to cut the tree before the height where Florida and Colorado merge (e.g. <span class="math inline">\(2.3\)</span>) and after the height where Florida and Illinois merge (e.g. <span class="math inline">\(1.8\)</span>).</p>
+</div>
+<p><br></p>
+<p>The previous tasks all focus on the HAC result using complete linkage as the linkage criterion. Let's now consider other linkage criterion and see it changes the clustering.</p>
+<p><strong>TASK 6</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li>Perform HAC using the following three linkage criteria - single, average, and centroid.</li>
+<li>Produce the dendrograms and comment on the plots.</li>
+<li>Use the <code>cuttree</code> command to split the observations into 4 clusters. Plot the results using the <code>pairs</code> function and comment on them.</li>
+</ol>
+<div class="webex-solution">
+<button>
+Hide
+</button>
+<ol style="list-style-type: lower-alpha">
+<li>The linkage criterion is defined by the <code>method</code> argument within the <code>hclust</code> function.</li>
+<li>Look at Example 6.</li>
+</ol>
+</div>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<ol style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb16-1" aria-hidden="true" tabindex="-1"></a>usarrests.clus.single <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">dist</span>(USArrests),<span class="at">method =</span> <span class="st">&quot;single&quot;</span>)</span>
+<span id="cb16-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb16-2" aria-hidden="true" tabindex="-1"></a>usarrests.clus.average <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">dist</span>(USArrests),<span class="at">method =</span> <span class="st">&quot;average&quot;</span>)</span>
+<span id="cb16-3"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb16-3" aria-hidden="true" tabindex="-1"></a>usarrests.clus.centroid <span class="ot">&lt;-</span> <span class="fu">hclust</span>(<span class="fu">dist</span>(USArrests),<span class="at">method =</span> <span class="st">&quot;centroid&quot;</span>)</span></code></pre></div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>For completeness, the dendrogram of HAC with complete linkage is also plotted.</li>
+</ol>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.dendrogram</span>(usarrests.clus,<span class="at">hang =</span> <span class="dv">0</span>),<span class="at">ylab=</span><span class="st">&quot;complete linkage&quot;</span>,</span>
+<span id="cb17-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb17-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Euclidean distance&quot;</span>,<span class="at">horiz=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-15-1.png" width="1296" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.dendrogram</span>(usarrests.clus.single,<span class="at">hang =</span> <span class="dv">0</span>),<span class="at">ylab=</span><span class="st">&quot;single linkage&quot;</span>,</span>
+<span id="cb18-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb18-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Euclidean distance&quot;</span>,<span class="at">horiz=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-15-2.png" width="1296" /></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.dendrogram</span>(usarrests.clus.average,<span class="at">hang =</span> <span class="dv">0</span>),<span class="at">ylab=</span><span class="st">&quot;average linkage&quot;</span>,</span>
+<span id="cb19-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb19-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Euclidean distance&quot;</span>,<span class="at">horiz=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-15-3.png" width="1296" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.dendrogram</span>(usarrests.clus.centroid,<span class="at">hang =</span> <span class="dv">0</span>),<span class="at">ylab=</span><span class="st">&quot;centroid linkage&quot;</span>,</span>
+<span id="cb20-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb20-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Euclidean distance&quot;</span>,<span class="at">horiz=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-15-4.png" width="1296" />
+Comparing the dendrograms produced from HAC with complete linkage and single linkage, it is clear that single linkage shows the chaining pattern, where clusters were merged together due to single elements being close to each other. The average linkage balances out between complete linkage and single linkage. The centroid linkage shows the issue of inversion, e.g. between Delaware and Arkansas.</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb21-1" aria-hidden="true" tabindex="-1"></a>four.clus.complete <span class="ot">&lt;-</span> <span class="fu">cutree</span>(usarrests.clus,<span class="at">k=</span><span class="dv">4</span>)</span>
+<span id="cb21-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(USArrests,<span class="at">col=</span>four.clus.complete,<span class="at">lower.panel=</span><span class="cn">NULL</span>,<span class="at">main=</span><span class="st">&quot;HAC with complete linkage&quot;</span>)</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb22-1" aria-hidden="true" tabindex="-1"></a>four.clus.single <span class="ot">&lt;-</span> <span class="fu">cutree</span>(usarrests.clus.single,<span class="at">k=</span><span class="dv">4</span>)</span>
+<span id="cb22-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(USArrests,<span class="at">col=</span>four.clus.single,<span class="at">lower.panel=</span><span class="cn">NULL</span>,<span class="at">main=</span><span class="st">&quot;HAC with single linkage&quot;</span>)</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb23-1" aria-hidden="true" tabindex="-1"></a>four.clus.average <span class="ot">&lt;-</span> <span class="fu">cutree</span>(usarrests.clus.average,<span class="at">k=</span><span class="dv">4</span>)</span>
+<span id="cb23-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(USArrests,<span class="at">col=</span>four.clus.average,<span class="at">lower.panel=</span><span class="cn">NULL</span>,<span class="at">main=</span><span class="st">&quot;HAC with average linkage&quot;</span>)</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-16-3.png" width="672" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb24-1" aria-hidden="true" tabindex="-1"></a>four.clus.centroid <span class="ot">&lt;-</span> <span class="fu">cutree</span>(usarrests.clus.centroid,<span class="at">k=</span><span class="dv">4</span>)</span>
+<span id="cb24-2"><a href="exercise-1-tasks-2-7-in-lecture-notes.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(USArrests,<span class="at">col=</span>four.clus.centroid,<span class="at">lower.panel=</span><span class="cn">NULL</span>,<span class="at">main=</span><span class="st">&quot;HAC with centroid linkage&quot;</span>)</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-16-4.png" width="672" /></p>
+<p>There is a clear pattern that HAC with single linkage clusters almost all observations into one group, compared with cluster linkage leads to roughly equal number of observations in each cluster. Centroid linkage also results in the vast majority of observations in a single cluster.</p>
+</div>
+<p><br></p>
+<p>While different linkage criteria lead to different clustering results as shown in the pairs plot, without any prior knowledge about the ground truth label of the observation, we cannot conclude which one is better. All we could do is to comment on the clustering performance, e.g. based on the silhouette width.</p>
+<p><strong>QUESTION</strong>: Select the optimal number of clusters for HAC with complete, single, average and centroid linkage according to the average silhouette width. After that, suggest which HAC result produces the best clustering for this dataset and comment on the performance.</p>
 
 </div>
 <script>

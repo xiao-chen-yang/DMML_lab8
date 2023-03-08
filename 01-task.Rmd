@@ -76,3 +76,63 @@ abline(v=2,lty=2,lwd=2)
 ```
 `r unhide()`
 <br>
+
+**TASK 7**: Assume that you have information that Florida and Illinois should be clustered together and at the same time that Florida and Colorado should be in different clusters. What can you do to make this happen?
+`r hide("Solution")`
+Looking at the dendrogram, you would have to cut the tree before the height where Florida and Colorado merge (e.g. $2.3$) and after the height where Florida and Illinois merge (e.g. $1.8$).
+`r unhide()`
+<br>
+
+The previous tasks all focus on the HAC result using complete linkage as the linkage criterion. Let's now consider other linkage criterion and see it changes the clustering. 
+
+**TASK 6** 
+
+(a) Perform HAC using the following three linkage criteria - single, average, and centroid. 
+(b) Produce the dendrograms and comment on the plots.
+(c) Use the `cuttree` command to split the observations into 4 clusters. Plot the results using the `pairs` function and comment on them.
+
+`r hide("Hide")`
+(a) The linkage criterion is defined by the `method` argument within the `hclust` function. 
+(c) Look at Example 6. 
+`r unhide()`
+
+`r hide("Solution")`
+(a)
+```{r}
+usarrests.clus.single <- hclust(dist(USArrests),method = "single")
+usarrests.clus.average <- hclust(dist(USArrests),method = "average")
+usarrests.clus.centroid <- hclust(dist(USArrests),method = "centroid")
+```
+
+(b) For completeness, the dendrogram of HAC with complete linkage is also plotted. 
+```{r fig.height=11, fig.width=13.5}
+plot(as.dendrogram(usarrests.clus,hang = 0),ylab="complete linkage",
+     xlab="Euclidean distance",horiz=TRUE)
+plot(as.dendrogram(usarrests.clus.single,hang = 0),ylab="single linkage",
+     xlab="Euclidean distance",horiz=TRUE)
+plot(as.dendrogram(usarrests.clus.average,hang = 0),ylab="average linkage",
+     xlab="Euclidean distance",horiz=TRUE)
+plot(as.dendrogram(usarrests.clus.centroid,hang = 0),ylab="centroid linkage",
+     xlab="Euclidean distance",horiz=TRUE)
+```
+Comparing the dendrograms produced from HAC with complete linkage and single linkage, it is clear that single linkage shows the chaining pattern, where clusters were merged together due to single elements being close to each other. The average linkage balances out between complete linkage and single linkage. The centroid linkage shows the issue of inversion, e.g. between Delaware and Arkansas.
+
+(c)
+```{r}
+four.clus.complete <- cutree(usarrests.clus,k=4)
+pairs(USArrests,col=four.clus.complete,lower.panel=NULL,main="HAC with complete linkage")
+four.clus.single <- cutree(usarrests.clus.single,k=4)
+pairs(USArrests,col=four.clus.single,lower.panel=NULL,main="HAC with single linkage")
+four.clus.average <- cutree(usarrests.clus.average,k=4)
+pairs(USArrests,col=four.clus.average,lower.panel=NULL,main="HAC with average linkage")
+four.clus.centroid <- cutree(usarrests.clus.centroid,k=4)
+pairs(USArrests,col=four.clus.centroid,lower.panel=NULL,main="HAC with centroid linkage")
+```
+
+There is a clear pattern that HAC with single linkage clusters almost all observations into one group, compared with cluster linkage leads to roughly equal number of observations in each cluster. Centroid linkage also results in the vast majority of observations in a single cluster.
+`r unhide()`
+<br>
+
+While different linkage criteria lead to different clustering results as shown in the pairs plot, without any prior knowledge about the ground truth label of the observation, we cannot conclude which one is better. All we could do is to comment on the clustering performance, e.g. based on the silhouette width. 
+
+**QUESTION**: Select the optimal number of clusters for HAC with complete, single, average and centroid linkage according to the average silhouette width. After that, suggest which HAC result produces the best clustering for this dataset and comment on the performance. 
