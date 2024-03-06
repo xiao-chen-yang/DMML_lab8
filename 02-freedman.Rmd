@@ -1,0 +1,96 @@
+# Exercise 2: Freedman data
+
+In this exercise, we will look at a data set called "Freedman" from the `car` package. The "Freedman" data frame has 110 rows and 4 columns. The observations are U. S. metropolitan areas with 1968 populations of 250,000 or more. 
+
+```{r warning=FALSE, message=FALSE}
+library(car)
+data <- Freedman
+```
+
+**QUESTION**:
+
+1. Perform exploratory data analysis and if necessary, clean the data to prepare for hierarchical agglomerative clustering. 
+
+`r hide("Hint")`
+Check the variable type, which could inform which distance metrics to be used. 
+`r unhide()`
+
+`r hide("Solution")`
+A quick way to check the data is by using the `skim` function:
+```{r}
+library(skimr)
+skim(data)
+```
+
+
+From this output, we notice that this data set has some missing values. The simplest way to handle missing values is by removing all rows containing missing value:
+```{r}
+data <- na.omit(data)
+```
+
+There are more sophisticated methods for imputing missing values. However, we'll skip this as it is beyond the scope of the exercise. 
+
+In addition, we notice that the four variables in this data set have very different mean values and standard deviations. Therefore, a scaling operation should be performed. 
+```{r}
+data <- scale(data)
+```
+
+`r unhide()`
+
+2. Perform HAC using three different linkage criteria. Produce the dendrograms and comment on the plots.
+
+`r hide("Solution")`
+Below is a sample code; you should modify the arguments to change the linkage criteria.
+```{r}
+# Dissimilarity matrix
+d <- dist(data, method = "euclidean")
+# Hierarchical clustering using Complete Linkage
+hc1 <- hclust(d, method = "complete" )
+# Plot the obtained dendrogram
+plot(hc1, hang=0, cex=0.5)
+```
+
+To generate more beautiful dendrogram visualisations, check this [article](http://www.sthda.com/english/wiki/beautiful-dendrogram-visualizations-in-r-5-must-known-methods-unsupervised-machine-learning#plot.dendrogram-function).
+`r unhide()`
+
+3. Use the silhouette width to determine the optimal number of clusters.
+
+`r hide("Solution")`
+We could either produce the silhouette plots for different number of clusters and then compare the silhoette width, or use the `fviz_nbclust` function from the `factoextra` package which generates a plot of silhouette width against the number of clusters. 
+
+First, let's try produce the silhouette plots for 2-5 clusters.
+```{r}
+library(cluster); library(dendextend)
+dend1 <- as.dendrogram(hc1, hang=0)
+# Cut the dendrogram to create 2/3/4/5 clusters
+allocations_2clusters <- cutree(dend1,k=2)
+allocations_3clusters <- cutree(dend1,k=3)
+allocations_4clusters <- cutree(dend1,k=4)
+allocations_5clusters <- cutree(dend1,k=5)
+# Plot the obtained dendrogram
+plot(silhouette(allocations_2clusters,dist(data)),
+  col = c("black", "red"),
+  main="Silhouette plot (2 clusters)")
+plot(silhouette(allocations_3clusters,dist(data)),
+  col = c("black", "red", "green"),
+  main="Silhouette plot (3 clusters)")
+plot(silhouette(allocations_4clusters,dist(data)),
+  col = c("black", "red", "green", "blue"),
+  main="Silhouette plot (4 clusters)")
+plot(silhouette(allocations_5clusters,dist(data)),
+  col = c("black", "red", "green", "blue","magenta"),
+  main="Silhouette plot (5 clusters)")
+```
+
+One thing we notice from the four plots is that the first cluster contains a large number of samples while the other clusters have very little samples. When splitting the dataset into more clusters, the newly added clusters have only 1 observations. Therefore, it seems sufficient to consider only two clusters. 
+
+Let's now try the `fviz_nbclust` function:
+```{r message=FALSE}
+library(factoextra)
+ggplot_fviz <-fviz_nbclust(data, FUN=hcut, method="silhouette", hc_method="complete")
+ggplot_fviz
+```
+
+Similar to our previous finding, using two clusters gives the highest average silhouette width. 
+`r unhide()`
+

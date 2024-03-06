@@ -36,12 +36,12 @@ d <- dist(data,method="euclidian")
 hiclust <- hclust(d, method="single")
 ```
 
-To plot the resulting dendrogram, the plot command is used on the `hclust` fitted object. If the dendrogram suggests $g$  clusters, we could determine the cluster assignment by using the command `cutree` within the `dendextend` package with argument `k` set to `g`. Alternatively, if the dendrogram should be cut at height $l$, we could set the argument `h` to `l`. The result will be a vector with length equal to the number of observations, each entry identifying which cluster the corresponding object is assigned to.
+To plot the resulting dendrogram, the plot command is used on the `hclust` fitted object. If the dendrogram suggests $g$  clusters, we could determine the cluster assignment by using the command `cutree` within the `dendextend` package with argument `k` set to $g$. Alternatively, if the dendrogram should be cut at height $l$, we could set the argument `h` to $l$. The result will be a vector with length equal to the number of observations, each entry identifying which cluster the corresponding object is assigned to.
 ```{r eval=FALSE}
 plot(hiclust)
 library(dendextend)
-clusters <- cutree(hiclust, k=3)
-clusters <- cutree(hiclust, h=20)
+clusters <- cutree(hiclust, k=3) # cut the dendrogram to form 3 clusters
+clusters <- cutree(hiclust, h=20) # cut the dendrogram at the height of 20
 ```
 
 It is sometimes also helpful to visualise the data giving different colours to observations belonging to different clusters. This can be done by using the function `color_branches` within the `dendextend` package. 
