@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | STATS5099 Data Mining and Machine Learning</title>
-  <meta name="description" content="Page not found | STATS5099 Data Mining and Machine Learning" />
-  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+  <title>4 Exercise 3: dividend | STATS5099 Data Mining and Machine Learning</title>
+  <meta name="description" content="4 Exercise 3: dividend | STATS5099 Data Mining and Machine Learning" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | STATS5099 Data Mining and Machine Learning" />
+  <meta property="og:title" content="4 Exercise 3: dividend | STATS5099 Data Mining and Machine Learning" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | STATS5099 Data Mining and Machine Learning" />
+  <meta name="twitter:title" content="4 Exercise 3: dividend | STATS5099 Data Mining and Machine Learning" />
   
   
   
@@ -28,7 +28,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
+<link rel="prev" href="exercise-2-german-data.html"/>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -117,10 +117,6 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<style type="text/css">
-  
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 <link rel="stylesheet" href="include/webex.css" type="text/css" />
@@ -136,13 +132,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to DMML Lab 8</a>
-<ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#implementing-neural-networks-in-r"><i class="fa fa-check"></i><b>1.1</b> Implementing neural networks in <code>R</code></a></li>
-</ul></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to DMML Lab 6</a></li>
 <li class="chapter" data-level="2" data-path="exercise-1-task-2-in-lecture-notes.html"><a href="exercise-1-task-2-in-lecture-notes.html"><i class="fa fa-check"></i><b>2</b> Exercise 1: Task 2 in lecture notes</a></li>
 <li class="chapter" data-level="3" data-path="exercise-2-german-data.html"><a href="exercise-2-german-data.html"><i class="fa fa-check"></i><b>3</b> Exercise 2: German data</a></li>
-<li class="chapter" data-level="4" data-path="exercise-3-dividend-data.html"><a href="exercise-3-dividend-data.html"><i class="fa fa-check"></i><b>4</b> Exercise 3: Dividend data</a></li>
+<li class="chapter" data-level="4" data-path="exercise-3-dividend.html"><a href="exercise-3-dividend.html"><i class="fa fa-check"></i><b>4</b> Exercise 3: dividend</a></li>
 </ul>
 
       </nav>
@@ -160,11 +153,93 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="exercise-3-dividend" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Exercise 3: dividend<a href="exercise-3-dividend.html#exercise-3-dividend" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this example, our goal is to develop a neural network to determine if a stock pays a dividend or not. The dataset is stored under <code>dividendinfo.csv</code>, which includes one response variable and five predictor variables.</p>
+<ul>
+<li><code>dividend</code> (class): A value of 1 indicates that the stock pays a dividend; 0 indicates that the stock that does not pay a dividend.</li>
+<li><code>fcfps</code>: Free cash flow per share (in $)</li>
+<li><code>earnings_growth</code>: Earnings growth in the past year (in %)</li>
+<li><code>de</code>: Debt to Equity ratio</li>
+<li><code>mcap</code>: Market Capitalization of the stock</li>
+<li><code>current_ratio</code>: Current Ratio (or Current Assets/Current Liabilities)</li>
+</ul>
+<p><strong>Task</strong></p>
+<ol style="list-style-type: decimal">
+<li>Read in the data and perform exploratory analysis. What have you observed?</li>
+</ol>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="exercise-3-dividend.html#cb1-1" aria-hidden="true" tabindex="-1"></a>dividend <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;dividendinfo.csv&quot;</span>)</span>
+<span id="cb1-2"><a href="exercise-3-dividend.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="exercise-3-dividend.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># some example codes for numerical summaries</span></span>
+<span id="cb1-4"><a href="exercise-3-dividend.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dividend)</span>
+<span id="cb1-5"><a href="exercise-3-dividend.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb1-6"><a href="exercise-3-dividend.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(dividend)</span>
+<span id="cb1-7"><a href="exercise-3-dividend.html#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="exercise-3-dividend.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># some example codes for graphical summaries</span></span>
+<span id="cb1-9"><a href="exercise-3-dividend.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(dividend)</span>
+<span id="cb1-10"><a href="exercise-3-dividend.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">libray</span>(GGally)</span>
+<span id="cb1-11"><a href="exercise-3-dividend.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(dividend)</span>
+<span id="cb1-12"><a href="exercise-3-dividend.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>));</span>
+<span id="cb1-13"><a href="exercise-3-dividend.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(dividend),<span class="cf">function</span>(i) <span class="fu">boxplot</span>(dividend[,i]<span class="sc">~</span>dividend<span class="sc">$</span>dividend)))</span></code></pre></div>
+</div>
+<ol start="2" style="list-style-type: decimal">
+<li>Pre-process and split the data to prepare for training and evaluating a neural network.</li>
+</ol>
+<div class="webex-solution">
+<button>
+Hint
+</button>
+<p>As all variables are continuous and they have quite different ranges, scale them either using standardisation or min-max normalisation.</p>
+</div>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<p>While there are built-in functions such as <code>scale</code> to standardise the entire data, the best practice is to split the data into training and test first and then apply standardisation/normalisation. This could avoid information leakage from training to test data.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="exercise-3-dividend.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data split</span></span>
+<span id="cb2-2"><a href="exercise-3-dividend.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb2-3"><a href="exercise-3-dividend.html#cb2-3" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(dividend),<span class="fl">0.8</span><span class="sc">*</span><span class="fu">nrow</span>(dividend))</span>
+<span id="cb2-4"><a href="exercise-3-dividend.html#cb2-4" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> dividend[idx,]</span>
+<span id="cb2-5"><a href="exercise-3-dividend.html#cb2-5" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> dividend[<span class="sc">-</span>idx,]</span>
+<span id="cb2-6"><a href="exercise-3-dividend.html#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="exercise-3-dividend.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># option 1: Standardise the data</span></span>
+<span id="cb2-8"><a href="exercise-3-dividend.html#cb2-8" aria-hidden="true" tabindex="-1"></a>standardisation <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb2-9"><a href="exercise-3-dividend.html#cb2-9" aria-hidden="true" tabindex="-1"></a>  (x <span class="sc">-</span> <span class="fu">mean</span>(x)) <span class="sc">/</span> <span class="fu">sd</span>(x)</span>
+<span id="cb2-10"><a href="exercise-3-dividend.html#cb2-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-11"><a href="exercise-3-dividend.html#cb2-11" aria-hidden="true" tabindex="-1"></a>train.std <span class="ot">&lt;-</span> <span class="fu">apply</span>(train[,<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>], <span class="dv">2</span>, standardisation)</span>
+<span id="cb2-12"><a href="exercise-3-dividend.html#cb2-12" aria-hidden="true" tabindex="-1"></a>train.std <span class="ot">&lt;-</span> <span class="fu">cbind</span>(train[,<span class="dv">1</span>],train.std)</span>
+<span id="cb2-13"><a href="exercise-3-dividend.html#cb2-13" aria-hidden="true" tabindex="-1"></a>test.std  <span class="ot">&lt;-</span> <span class="fu">apply</span>(test[,<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>], <span class="dv">2</span>, standardisation)</span>
+<span id="cb2-14"><a href="exercise-3-dividend.html#cb2-14" aria-hidden="true" tabindex="-1"></a>test.std  <span class="ot">&lt;-</span> <span class="fu">cbind</span>(test[,<span class="dv">1</span>],test.std)</span>
+<span id="cb2-15"><a href="exercise-3-dividend.html#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="exercise-3-dividend.html#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># option 2: Normalise the data</span></span>
+<span id="cb2-17"><a href="exercise-3-dividend.html#cb2-17" aria-hidden="true" tabindex="-1"></a>min_max_scale <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb2-18"><a href="exercise-3-dividend.html#cb2-18" aria-hidden="true" tabindex="-1"></a>  (x <span class="sc">-</span> <span class="fu">min</span>(x)) <span class="sc">/</span> (<span class="fu">max</span>(x) <span class="sc">-</span> <span class="fu">min</span>(x))</span>
+<span id="cb2-19"><a href="exercise-3-dividend.html#cb2-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-20"><a href="exercise-3-dividend.html#cb2-20" aria-hidden="true" tabindex="-1"></a>train.norm <span class="ot">&lt;-</span><span class="fu">apply</span>(train[,<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>], <span class="dv">2</span>, min_max_scale)</span>
+<span id="cb2-21"><a href="exercise-3-dividend.html#cb2-21" aria-hidden="true" tabindex="-1"></a>train.norm <span class="ot">&lt;-</span><span class="fu">cbind</span>(train[,<span class="dv">1</span>],train.norm)</span>
+<span id="cb2-22"><a href="exercise-3-dividend.html#cb2-22" aria-hidden="true" tabindex="-1"></a>test.norm  <span class="ot">&lt;-</span><span class="fu">apply</span>(test[,<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>],  <span class="dv">2</span>, min_max_scale)</span>
+<span id="cb2-23"><a href="exercise-3-dividend.html#cb2-23" aria-hidden="true" tabindex="-1"></a>test.norm  <span class="ot">&lt;-</span><span class="fu">cbind</span>(test[,<span class="dv">1</span>], test.norm)</span></code></pre></div>
+</div>
+<div class="webex-solution">
+<button>
+Hint
+</button>
+</div>
+<div class="webex-solution">
+<button>
+Hint
+</button>
+</div>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+</div>
+
 </div>
 <script>
 
@@ -342,7 +417,7 @@ window.onload = function() {
           </div>
         </div>
       </div>
-
+<a href="exercise-2-german-data.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
@@ -396,20 +471,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

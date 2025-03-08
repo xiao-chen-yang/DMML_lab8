@@ -29,7 +29,7 @@
   
   
 
-<link rel="next" href="exercise-1-tasks-2-7-in-lecture-notes.html"/>
+<link rel="next" href="exercise-1-task-2-in-lecture-notes.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -136,9 +136,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to DMML Lab 8</a></li>
-<li class="chapter" data-level="2" data-path="exercise-1-tasks-2-7-in-lecture-notes.html"><a href="exercise-1-tasks-2-7-in-lecture-notes.html"><i class="fa fa-check"></i><b>2</b> Exercise 1: Tasks 2-7 in lecture notes</a></li>
-<li class="chapter" data-level="3" data-path="exercise-2-freedman-data.html"><a href="exercise-2-freedman-data.html"><i class="fa fa-check"></i><b>3</b> Exercise 2: Freedman data</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to DMML Lab 8</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#implementing-neural-networks-in-r"><i class="fa fa-check"></i><b>1.1</b> Implementing neural networks in <code>R</code></a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exercise-1-task-2-in-lecture-notes.html"><a href="exercise-1-task-2-in-lecture-notes.html"><i class="fa fa-check"></i><b>2</b> Exercise 1: Task 2 in lecture notes</a></li>
+<li class="chapter" data-level="3" data-path="exercise-2-german-data.html"><a href="exercise-2-german-data.html"><i class="fa fa-check"></i><b>3</b> Exercise 2: German data</a></li>
+<li class="chapter" data-level="4" data-path="exercise-3-dividend-data.html"><a href="exercise-3-dividend-data.html"><i class="fa fa-check"></i><b>4</b> Exercise 3: Dividend data</a></li>
 </ul>
 
       </nav>
@@ -161,30 +165,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="welcome-to-dmml-lab-8" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> Welcome to DMML Lab 8<a href="index.html#welcome-to-dmml-lab-8" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>In week 8, we learned about performing clustering by using hierarchical agglomerative clustering (HAC), visualising HAC via dendrograms, and selecting the optimal number of clusters according to the silhouette width.</p>
-<p>The command for hierarchical agglomerative clustering is <code>hclust</code>. Setting the method argument selects the linkage method. It takes as its first argument a distance matrix. The distance matrix can be created using the command <code>dist</code> (default method is Euclidean distance).</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">dist</span>(data,<span class="at">method=</span><span class="st">&quot;euclidian&quot;</span>)</span>
-<span id="cb1-2"><a href="index.html#cb1-2" tabindex="-1"></a>hiclust <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d, <span class="at">method=</span><span class="st">&quot;single&quot;</span>)</span></code></pre></div>
-<p>To plot the resulting dendrogram, the plot command is used on the <code>hclust</code> fitted object. If the dendrogram suggests <span class="math inline">\(g\)</span> clusters, we could determine the cluster assignment by using the command <code>cutree</code> within the <code>dendextend</code> package with argument <code>k</code> set to <span class="math inline">\(g\)</span>. Alternatively, if the dendrogram should be cut at height <span class="math inline">\(l\)</span>, we could set the argument <code>h</code> to <span class="math inline">\(l\)</span>. The result will be a vector with length equal to the number of observations, each entry identifying which cluster the corresponding object is assigned to.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" tabindex="-1"></a><span class="fu">plot</span>(hiclust)</span>
-<span id="cb2-2"><a href="index.html#cb2-2" tabindex="-1"></a><span class="fu">library</span>(dendextend)</span>
-<span id="cb2-3"><a href="index.html#cb2-3" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hiclust, <span class="at">k=</span><span class="dv">3</span>) <span class="co"># cut the dendrogram to form 3 clusters</span></span>
-<span id="cb2-4"><a href="index.html#cb2-4" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hiclust, <span class="at">h=</span><span class="dv">20</span>) <span class="co"># cut the dendrogram at the height of 20</span></span></code></pre></div>
-<p>It is sometimes also helpful to visualise the data giving different colours to observations belonging to different clusters. This can be done by using the function <code>color_branches</code> within the <code>dendextend</code> package.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" tabindex="-1"></a><span class="fu">library</span>(dendextend)</span>
-<span id="cb3-2"><a href="index.html#cb3-2" tabindex="-1"></a>dend <span class="ot">&lt;-</span> <span class="fu">as.dendrogram</span>(hiclust,<span class="at">hang=</span><span class="dv">0</span>)</span>
-<span id="cb3-3"><a href="index.html#cb3-3" tabindex="-1"></a>dend_cut_3clusters <span class="ot">&lt;-</span> <span class="fu">color_branches</span>(dend,<span class="at">k=</span><span class="dv">3</span>) <span class="co">#3 clusters</span></span>
-<span id="cb3-4"><a href="index.html#cb3-4" tabindex="-1"></a><span class="fu">plot</span>(dend_cut_3clusters, <span class="at">horiz=</span><span class="cn">TRUE</span>)</span></code></pre></div>
-<p>To determine the optimal number of clusters and/or assess the performance of clustering algorithms, silhouette plots can be used. The silhouette value ranges from −1 to 1, where a high value indicates that the object is well matched to its own cluster and poorly matched to neighbouring clusters. In <code>R</code>, we could either use the function <code>silhouette</code> after clustering.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="index.html#cb4-1" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">dist</span>(data,<span class="at">method=</span><span class="st">&quot;euclidian&quot;</span>)</span>
-<span id="cb4-2"><a href="index.html#cb4-2" tabindex="-1"></a>hiclust <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d, <span class="at">method=</span><span class="st">&quot;single&quot;</span>)</span>
-<span id="cb4-3"><a href="index.html#cb4-3" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hiclust, <span class="at">k=</span><span class="dv">2</span>)</span>
-<span id="cb4-4"><a href="index.html#cb4-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">silhouette</span>(clusters), <span class="fu">dist</span>(data), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code></pre></div>
-<p>The function <code>fviz_nbclust</code> from the package <code>factoextra</code> can produce a plot of the average silhouette width against the number of clusters, which helps determine the optimal number of clusters. We would have to use the <code>FUN=hcut</code> argument to specify hierarchical clustering.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="index.html#cb5-1" tabindex="-1"></a><span class="fu">library</span>(factoextra)</span>
-<span id="cb5-2"><a href="index.html#cb5-2" tabindex="-1"></a>ggplot_fviz <span class="ot">&lt;-</span><span class="fu">fviz_nbclust</span>(USArrests,<span class="at">FUN=</span>hcut,<span class="at">method =</span> <span class="st">&quot;silhouette&quot;</span>)</span>
-<span id="cb5-3"><a href="index.html#cb5-3" tabindex="-1"></a>ggplot_fviz</span></code></pre></div>
+<p>In week 8, we have studied neural networks, which consists an input layer, an output layer and any number of hidden layers specified by the user. In this lab, we will see how to fit neural networks in <code>R</code> and <code>Python</code>.</p>
+<div id="implementing-neural-networks-in-r" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Implementing neural networks in <code>R</code><a href="index.html#implementing-neural-networks-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To fit a relatively simple neural network (by simple, it means the network does not contain too many hidden layers, is not optimised using too advanced algorithms, and/or does not include regularisation techniques such as dropout), we use the <code>neuralnet</code> function from the <code>neuralnet</code> package. In particular, we need to specify the number of hidden layers and hidden nodes using the argument <code>hidden</code>, the loss function using <code>err.fct</code>, the activation function using <code>act.fct</code>, the activation function for the output layer using <code>linear.output</code> (set to <code>TRUE</code> for a linear activation function and <code>FALSE</code> to be the same as the activation function specified in <code>act.fct</code>). There are many other arguments could be manually set, such as the optimisation algorithm and learning rate; see help page of <code>neuralnet</code> for more details.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(neuralnet)</span>
+<span id="cb1-2"><a href="index.html#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="index.html#cb1-3" tabindex="-1"></a><span class="co"># an example neural network for regression tasks</span></span>
+<span id="cb1-4"><a href="index.html#cb1-4" tabindex="-1"></a>Model <span class="ot">&lt;-</span> <span class="fu">neuralnet</span>(Y<span class="sc">~</span>X1<span class="sc">+</span>X2<span class="sc">+</span>..., data, <span class="at">hidden=</span><span class="fu">c</span>(<span class="dv">5</span>), <span class="at">err.fct=</span><span class="st">&quot;sse&quot;</span>, <span class="at">act.fct=</span><span class="st">&quot;logistic&quot;</span>, <span class="at">linear.output=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-5"><a href="index.html#cb1-5" tabindex="-1"></a><span class="co"># The network contains a single hidden layers with 5 hidden nodes.</span></span>
+<span id="cb1-6"><a href="index.html#cb1-6" tabindex="-1"></a><span class="co"># The network uses sum of squared errors as the loss function.</span></span>
+<span id="cb1-7"><a href="index.html#cb1-7" tabindex="-1"></a><span class="co"># The network uses logistic function as the activation function for hidden nodes </span></span>
+<span id="cb1-8"><a href="index.html#cb1-8" tabindex="-1"></a><span class="co"># and linear function as the activation function for output nodes. </span></span>
+<span id="cb1-9"><a href="index.html#cb1-9" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="index.html#cb1-10" tabindex="-1"></a><span class="co"># an example neural network for classification tasks</span></span>
+<span id="cb1-11"><a href="index.html#cb1-11" tabindex="-1"></a>softplus <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">log</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(x))</span>
+<span id="cb1-12"><a href="index.html#cb1-12" tabindex="-1"></a>Model <span class="ot">&lt;-</span> <span class="fu">neuralnet</span>(Y<span class="sc">~</span>X1<span class="sc">+</span>X2<span class="sc">+</span>..., data, <span class="at">hidden=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">3</span>), <span class="at">err.fct=</span><span class="st">&quot;ce&quot;</span>, <span class="at">act.fct=</span>softplus, <span class="at">linear.output=</span><span class="cn">FALSE</span>)</span>
+<span id="cb1-13"><a href="index.html#cb1-13" tabindex="-1"></a><span class="co"># The network contains two hidden layers with 5 and 3 hidden nodes in each layer.</span></span>
+<span id="cb1-14"><a href="index.html#cb1-14" tabindex="-1"></a><span class="co"># The network uses cross entropy as the loss function.</span></span>
+<span id="cb1-15"><a href="index.html#cb1-15" tabindex="-1"></a><span class="co"># The network uses a user-defined softplus function as the activation function for hidden nodes and output nodes.</span></span>
+<span id="cb1-16"><a href="index.html#cb1-16" tabindex="-1"></a><span class="co"># The softplus function is a smooth approximation to rectified linear unit (ReLU) function. </span></span></code></pre></div>
+<p>To visualise the neural network, we could use the default <code>plot</code> function or <code>plotnet</code> function from the <code>NeuralNetTools</code> package.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" tabindex="-1"></a><span class="co"># option 1</span></span>
+<span id="cb2-2"><a href="index.html#cb2-2" tabindex="-1"></a><span class="fu">plot</span>(Model)</span>
+<span id="cb2-3"><a href="index.html#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="index.html#cb2-4" tabindex="-1"></a><span class="co"># option 2</span></span>
+<span id="cb2-5"><a href="index.html#cb2-5" tabindex="-1"></a><span class="co"># library(devtools); install_github(&#39;fawda123/NeuralNetTools&#39;)</span></span>
+<span id="cb2-6"><a href="index.html#cb2-6" tabindex="-1"></a><span class="fu">library</span>(NeuralNetTools)</span>
+<span id="cb2-7"><a href="index.html#cb2-7" tabindex="-1"></a><span class="fu">plotnet</span>(Model)</span></code></pre></div>
+<p>To use the model for predicting new observations, we could use the default <code>predict</code> function or the <code>compute</code> function. This returns the probability of the observation in each class and hence requires further conversion to evaluate the classification performance.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" tabindex="-1"></a><span class="co"># option 1</span></span>
+<span id="cb3-2"><a href="index.html#cb3-2" tabindex="-1"></a>test_predict_prob<span class="ot">&lt;-</span> <span class="fu">predict</span>(model, test_data)</span>
+<span id="cb3-3"><a href="index.html#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="index.html#cb3-4" tabindex="-1"></a><span class="co"># option 2</span></span>
+<span id="cb3-5"><a href="index.html#cb3-5" tabindex="-1"></a>test_predict_prob<span class="ot">&lt;-</span> neuralnet<span class="sc">::</span><span class="fu">compute</span>(model, test_data)<span class="sc">$</span>net.result</span>
+<span id="cb3-6"><a href="index.html#cb3-6" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="index.html#cb3-7" tabindex="-1"></a><span class="co"># convert to class label for binary classification</span></span>
+<span id="cb3-8"><a href="index.html#cb3-8" tabindex="-1"></a>test_predict_class <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(test_predict_prob<span class="sc">&gt;</span><span class="fl">0.5</span>, class1, class2) <span class="co">#class 1 and class 2 are the class names</span></span>
+<span id="cb3-9"><a href="index.html#cb3-9" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="index.html#cb3-10" tabindex="-1"></a><span class="co"># convert to class label for multi-class classification</span></span>
+<span id="cb3-11"><a href="index.html#cb3-11" tabindex="-1"></a>test_predict_class <span class="ot">&lt;-</span> <span class="fu">apply</span>(test_predict_prob, <span class="dv">1</span>, which.max)</span></code></pre></div>
 
+</div>
 </div>
 <script>
 
@@ -363,7 +385,7 @@ window.onload = function() {
         </div>
       </div>
 
-<a href="exercise-1-tasks-2-7-in-lecture-notes.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="exercise-1-task-2-in-lecture-notes.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

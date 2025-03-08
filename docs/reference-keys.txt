@@ -1,5 +1,0 @@
-fig:USdend
-tab:unnamed-chunk-19
-welcome-to-dmml-lab-8
-exercise-1-tasks-2-7-in-lecture-notes
-exercise-2-freedman-data

@@ -15,7 +15,9 @@ library(knitr)
 library(kableExtra)
 knitr::opts_chunk$set(echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
 
-library(dendextend)
+library(neuralnet)
+library(NeuralNetTools)
+options(digits=7)
 ```
 
 
@@ -28,42 +30,52 @@ knitr::write_bib(c(
 
 # Welcome to DMML Lab 8
 
-In week 8, we learned about performing clustering by using hierarchical agglomerative clustering (HAC), visualising HAC via dendrograms, and selecting the optimal number of clusters according to the silhouette width. 
+In week 8, we have studied neural networks, which consists an input layer, an output layer and any number of hidden layers specified by the user. In this lab, we will see how to fit neural networks in `R` and `Python`.
 
-The command for hierarchical agglomerative clustering is `hclust`. Setting the method argument selects the linkage method. It takes as its first argument a distance matrix. The distance matrix can be created using the command `dist` (default method is Euclidean distance).
+## Implementing neural networks in `R`
+To fit a relatively simple neural network (by simple, it means the network does not contain too many hidden layers, is not optimised using too advanced algorithms, and/or does not include regularisation techniques such as dropout), we use the `neuralnet` function from the `neuralnet` package. In particular, we need to specify the number of hidden layers and hidden nodes using the argument `hidden`, the loss function using `err.fct`, the activation function using `act.fct`, the activation function for the output layer using `linear.output` (set to `TRUE` for a linear activation function and `FALSE` to be the same as the activation function specified in `act.fct`). There are many other arguments could be manually set, such as the optimisation algorithm and learning rate; see help page of `neuralnet` for more details. 
 ```{r eval=FALSE}
-d <- dist(data,method="euclidian")
-hiclust <- hclust(d, method="single")
+library(neuralnet)
+
+# an example neural network for regression tasks
+Model <- neuralnet(Y~X1+X2+..., data, hidden=c(5), err.fct="sse", act.fct="logistic", linear.output=TRUE)
+# The network contains a single hidden layers with 5 hidden nodes.
+# The network uses sum of squared errors as the loss function.
+# The network uses logistic function as the activation function for hidden nodes 
+# and linear function as the activation function for output nodes. 
+
+# an example neural network for classification tasks
+softplus <- function(x) log(1+exp(x))
+Model <- neuralnet(Y~X1+X2+..., data, hidden=c(5,3), err.fct="ce", act.fct=softplus, linear.output=FALSE)
+# The network contains two hidden layers with 5 and 3 hidden nodes in each layer.
+# The network uses cross entropy as the loss function.
+# The network uses a user-defined softplus function as the activation function for hidden nodes and output nodes.
+# The softplus function is a smooth approximation to rectified linear unit (ReLU) function. 
 ```
 
-To plot the resulting dendrogram, the plot command is used on the `hclust` fitted object. If the dendrogram suggests $g$  clusters, we could determine the cluster assignment by using the command `cutree` within the `dendextend` package with argument `k` set to $g$. Alternatively, if the dendrogram should be cut at height $l$, we could set the argument `h` to $l$. The result will be a vector with length equal to the number of observations, each entry identifying which cluster the corresponding object is assigned to.
+To visualise the neural network, we could use the default `plot` function or `plotnet` function from the `NeuralNetTools` package. 
 ```{r eval=FALSE}
-plot(hiclust)
-library(dendextend)
-clusters <- cutree(hiclust, k=3) # cut the dendrogram to form 3 clusters
-clusters <- cutree(hiclust, h=20) # cut the dendrogram at the height of 20
+# option 1
+plot(Model)
+
+# option 2
+# library(devtools); install_github('fawda123/NeuralNetTools')
+library(NeuralNetTools)
+plotnet(Model)
 ```
 
-It is sometimes also helpful to visualise the data giving different colours to observations belonging to different clusters. This can be done by using the function `color_branches` within the `dendextend` package. 
+To use the model for predicting new observations, we could use the default `predict` function or the `compute` function. This returns the probability of the observation in each class and hence requires further conversion to evaluate the classification performance.
 ```{r eval=FALSE}
-library(dendextend)
-dend <- as.dendrogram(hiclust,hang=0)
-dend_cut_3clusters <- color_branches(dend,k=3) #3 clusters
-plot(dend_cut_3clusters, horiz=TRUE)
-```
+# option 1
+test_predict_prob<- predict(model, test_data)
 
-To determine the optimal number of clusters and/or assess the performance of clustering algorithms, silhouette plots can be used. The silhouette value ranges from −1 to 1, where a high value indicates that the object is well matched to its own cluster and poorly matched to neighbouring clusters. In `R`, we could either use the function `silhouette` after clustering. 
-```{r eval=FALSE}
-d <- dist(data,method="euclidian")
-hiclust <- hclust(d, method="single")
-clusters <- cutree(hiclust, k=2)
-plot(silhouette(clusters), dist(data), col=1:2)
-```
+# option 2
+test_predict_prob<- neuralnet::compute(model, test_data)$net.result
 
-The function `fviz_nbclust` from the package `factoextra` can produce a plot of the average silhouette width against the number of clusters, which helps determine the optimal number of clusters. We would have to use the `FUN=hcut` argument to specify hierarchical clustering.
-```{r eval=FALSE}
-library(factoextra)
-ggplot_fviz <-fviz_nbclust(USArrests,FUN=hcut,method = "silhouette")
-ggplot_fviz
+# convert to class label for binary classification
+test_predict_class <- ifelse(test_predict_prob>0.5, class1, class2) #class 1 and class 2 are the class names
+
+# convert to class label for multi-class classification
+test_predict_class <- apply(test_predict_prob, 1, which.max)
 ```
 

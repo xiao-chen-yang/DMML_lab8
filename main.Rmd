@@ -1,0 +1,501 @@
+---
+title: "STATS5099 Data Mining and Machine Learning"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+biblio-style: apalike
+link-citations: yes
+---
+```{r include=FALSE, cache=FALSE}
+suppressPackageStartupMessages({
+  library(webexercises)
+})
+
+knitr::knit_hooks$set(webex.hide = function(before, options, envir) {
+  if (before) {
+    if (is.character(options$webex.hide)) {
+      hide(options$webex.hide)
+    } else {
+      hide()
+    }
+  } else {
+    unhide()
+  }
+})
+```
+
+```{r setup, include = FALSE}
+library(webexercises)
+library(tinytex)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+knitr::opts_chunk$set(echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+
+library(neuralnet)
+library(NeuralNetTools)
+options(digits=7)
+```
+
+
+```{r include=FALSE, echo=FALSE}
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+
+# Welcome to DMML Lab 8
+
+In week 8, we have studied neural networks, which consists an input layer, an output layer and any number of hidden layers specified by the user. In this lab, we will see how to fit neural networks in `R` and `Python`.
+
+## Implementing neural networks in `R`
+To fit a relatively simple neural network (by simple, it means the network does not contain too many hidden layers, is not optimised using too advanced algorithms, and/or does not include regularisation techniques such as dropout), we use the `neuralnet` function from the `neuralnet` package. In particular, we need to specify the number of hidden layers and hidden nodes using the argument `hidden`, the loss function using `err.fct`, the activation function using `act.fct`, the activation function for the output layer using `linear.output` (set to `TRUE` for a linear activation function and `FALSE` to be the same as the activation function specified in `act.fct`). There are many other arguments could be manually set, such as the optimisation algorithm and learning rate; see help page of `neuralnet` for more details. 
+```{r eval=FALSE}
+library(neuralnet)
+
+# an example neural network for regression tasks
+Model <- neuralnet(Y~X1+X2+..., data, hidden=c(5), err.fct="sse", act.fct="logistic", linear.output=TRUE)
+# The network contains a single hidden layers with 5 hidden nodes.
+# The network uses sum of squared errors as the loss function.
+# The network uses logistic function as the activation function for hidden nodes 
+# and linear function as the activation function for output nodes. 
+
+# an example neural network for classification tasks
+softplus <- function(x) log(1+exp(x))
+Model <- neuralnet(Y~X1+X2+..., data, hidden=c(5,3), err.fct="ce", act.fct=softplus, linear.output=FALSE)
+# The network contains two hidden layers with 5 and 3 hidden nodes in each layer.
+# The network uses cross entropy as the loss function.
+# The network uses a user-defined softplus function as the activation function for hidden nodes and output nodes.
+# The softplus function is a smooth approximation to rectified linear unit (ReLU) function. 
+```
+
+To visualise the neural network, we could use the default `plot` function or `plotnet` function from the `NeuralNetTools` package. 
+```{r eval=FALSE}
+# option 1
+plot(Model)
+
+# option 2
+# library(devtools); install_github('fawda123/NeuralNetTools')
+library(NeuralNetTools)
+plotnet(Model)
+```
+
+To use the model for predicting new observations, we could use the default `predict` function or the `compute` function. This returns the probability of the observation in each class and hence requires further conversion to evaluate the classification performance.
+```{r eval=FALSE}
+# option 1
+test_predict_prob<- predict(model, test_data)
+
+# option 2
+test_predict_prob<- neuralnet::compute(model, test_data)$net.result
+
+# convert to class label for binary classification
+test_predict_class <- ifelse(test_predict_prob>0.5, class1, class2) #class 1 and class 2 are the class names
+
+# convert to class label for multi-class classification
+test_predict_class <- apply(test_predict_prob, 1, which.max)
+```
+
+
+<!--chapter:end:index.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+suppressPackageStartupMessages({
+  library(webexercises)
+})
+
+knitr::knit_hooks$set(webex.hide = function(before, options, envir) {
+  if (before) {
+    if (is.character(options$webex.hide)) {
+      hide(options$webex.hide)
+    } else {
+      hide()
+    }
+  } else {
+    unhide()
+  }
+})
+```
+# Exercise 1: Task 2 in lecture notes
+
+**QUESTION**: On the `Boston` data, fit five neural networks such that
+
+* the input layer has four nodes (`crime.rate`, `low.socio.status`, `aver.rooms` and `river.bounds`)
+* the output layer has one node (`median.value`)
+* one hidden layer with the logistic function as its activation function and different number of hidden nodes, specifically from 1 up to 5. 
+
+For each neural network (i.e. the network with the specific number of hidden nodes), estimate the sum of squared errors (SSEs) for the training and test data sets. Visualise the SSEs with a graph and comment on its output.
+
+<br>
+
+The following codes were included in the lecture note to pre-process the data and split the data into training and test sets. 
+```{r warning=FALSE}
+# load the data
+library(MASS)
+data(Boston)
+Boston <- Boston[,c("medv","crim","lstat","rm","rad","chas")]
+colnames(Boston) <- c("median.value","crime.rate","low.socio.status",
+"aver.rooms","index.radial.highways","river.bounds")
+
+# min-max normalisation
+maxs <- apply(Boston, 2, max)
+mins <- apply(Boston, 2, min)
+scaled <- as.data.frame(scale(Boston, center = mins, scale = maxs - mins))
+
+# train-test random splitting
+set.seed(84)
+index <- sample(1:nrow(Boston),round(0.75*nrow(Boston)))
+train_Boston<- scaled[ index,]
+test_Boston <- scaled[-index,]
+```
+
+**Hint**: 
+
+1. Write down the `R` command to fit a neural network on this dataset. 
+
+`r hide("Hint")`
+Suppose the hidden layer has only one hidden node. The corresponding `R` code is as follows.
+```{r eval=FALSE}
+Model <- neuralnet(median.value~crime.rate+low.socio.status+aver.rooms+river.bounds, 
+                   data=train_Boston, hidden=c(1), linear.output=TRUE)
+```
+`r unhide()`
+
+2. Write down the `R` commands to calculate SSEs for the training and test data sets.
+`r hide("Hint")`
+Slightly different from the usual formula for sum of squared errors, we divide it by two so that the formula is consistent with the `neuralnet` package:
+\[\frac{\sum(\text{observed}-\text{fitted values})^2}{2}\]
+
+```{r eval=FALSE}
+# training SSEs
+train_SSE <- sum((Model$net.result[[1]]-train_Boston$median.value)^2)/2
+test_pred <- neuralnet::compute(Model,test_Boston[,c("crime.rate",
+"low.socio.status","aver.rooms")])
+test_SSE <- sum((test_pred$net.result[[1]]-test_Boston$median.value)^2)/2
+```
+`r unhide()`
+
+3. Combining the two hints to solve the question. 
+`r hide("Solution")`
+```{r}
+library(neuralnet)
+set.seed(84)
+
+# create an empty dataframe to save training and test SSE.
+SSE <- data.frame(matrix(nrow=5, ncol=3))
+colnames(SSE) <- c("no.hidden nodes","train SSE","test SSE")
+
+# train the neural network and record training and test SSE
+for (i in 1:5){
+  SSE[i,1] <- i #record the number of hidden nodes
+  nn_boston <- neuralnet(median.value~crime.rate+low.socio.status+aver.rooms+river.bounds,
+                         data=train_Boston, hidden=c(i), linear.output=TRUE) #fit the model
+  SSE[i,2] <- sum((nn_boston$net.result[[1]] - train_Boston[,"median.value"])^2)/2 #record training SSE
+  test_pred <- neuralnet::compute(nn_boston, test_Boston[, c("crime.rate","low.socio.status","aver.rooms","river.bounds")])
+  SSE[i,3] <- sum((test_pred$net.result[[1]] - test_Boston[, "median.value"])^2)/2 #record test SSE
+}
+
+SSE
+```
+
+To visualise the SSEs, we create a bar plot using `ggplot`. 
+
+```{r,echo=c(1:3,5,7), fig.align='center',fig.height=3, fig.width=5}
+# Bar plot of results
+library(ggplot2);library(tibble)
+Regression_NN_Errors <- tibble(Network = rep(c("NN1", "NN2", "NN3", "NN4", "NN5"), each = 2),
+                               DataSet = rep(c("Train", "Test"), time = 5),
+                               SSE = c(t(SSE[,2:3])))
+Regression_NN_Errors$DataSet <- factor(Regression_NN_Errors$DataSet,levels=c("Train","Test"))
+nn_ggplot <- Regression_NN_Errors %>%
+  ggplot(aes(Network, SSE, fill = DataSet)) +
+  geom_col(position = "dodge") +
+  ggtitle("Neural networks SSE (different number of nodes in the hidden layer)")
+nn_ggplot <- nn_ggplot + theme(panel.background = element_rect( fill = "transparent", colour = NA), plot.background = element_rect( fill = "transparent", colour = NA), panel.border = element_rect(fill = NA, colour = "black", linewidth = 1),legend.background = element_rect(fill = "transparent", colour= "NA"))
+nn_ggplot
+```
+We can notice that:
+
+- the training SSE is decreasing while the number of hidden nodes increases, and
+
+- the test SSE is not monotonically decreasing and the lowest test SSE is achieved when the network has five nodes in the hidden layer.
+
+The first finding should not be surprising as adding more hidden nodes increases model capacity and hence the training error will decrease. However, a larger model may suffer from overfitting and hence the test error may not always decreasing. In general, we prefer the "least" complex neural network with the low(est) SSE on the test data set. Note that using different criteria could give us totally different results.
+
+In addition, be cautious that the current result is produced based on a single training of neural network. Since the optimisation of neural network is sensitive to initialisation, running the algorithm again is likely to lead to different conclusions. To alleviate such randomness, consider adding the argument `rep` into `neuralnet`; e.g. including `rep=10` will force the same network to be trained for ten times.  
+`r unhide()`
+
+<!--chapter:end:01-tasks_in_lectures.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+suppressPackageStartupMessages({
+  library(webexercises)
+})
+
+knitr::knit_hooks$set(webex.hide = function(before, options, envir) {
+  if (before) {
+    if (is.character(options$webex.hide)) {
+      hide(options$webex.hide)
+    } else {
+      hide()
+    }
+  } else {
+    unhide()
+  }
+})
+```
+# Exercise 2: German data
+
+This exercise extends Examples 6-8 in lecture note. 
+
+**Task**
+
+1. Fit multiple neural networks with `Account_balance`, `Purpose`, `Length_of_cur_employment` and `Credit_Amount` as predictors in your model.
+
+`r hide("Hide")`
+Remember to pre-process the data for both categorical variables and continuous variables before fitting the neural network. The categorical variables should be transformed into dummy variables using one-hot encoding and the continuous variables should be scaled using either standardisation or min-max normalisation. 
+`r unhide()`
+
+2. Compare the cross-entropy loss, Akaike Information Criterion
+(AIC) and Bayesian Information Criterion (BIC) of different models, and select the optimal model.  
+
+`r hide("Hide")`
+To get AIC and BIC, set the argument `likelihood=TRUE` in `neuralnet`.
+`r unhide()`
+
+3. For the optimal model you selected in part (2), report its test performance. 
+`r hide("Solution")`
+```{r}
+load("German.RData")
+train <- German_train
+
+# Data pre-processing
+min_max_scale <- function(x){
+  (x - min(x)) / (max(x) - min(x))
+}
+train$Credit_amount <- min_max_scale(train$Credit_amount)
+credit_card_matrix <- model.matrix(~Account_balance+Purpose+Length_of_cur_employment
+                                   +Credit_amount, data=train)
+credit_card_matrix_final <- credit_card_matrix[,-1]
+```
+
+Next we fit a few neural networks with different width (i.e. the number of hidden nodes) and depth (i.e. the number of hidden layers).
+```{r}
+train$Creditability <- as.integer(train$Creditability)-1
+predictor_list <- paste(colnames(credit_card_matrix_final),collapse="+")
+f <- paste(c("train$Creditability~",predictor_list),collapse="")
+set.seed(84)
+nn_credit_one_layer <-  neuralnet(f,data=credit_card_matrix_final,hidden=c(5),
+                               linear.output = FALSE,err.fct = 'ce',
+                               likelihood=TRUE, threshold = 0.1)
+nn_credit_two_layers_1 <- neuralnet(f,data=credit_card_matrix_final,
+                                            hidden=c(4,1),
+                               linear.output = FALSE,err.fct = 'ce',
+                               likelihood=TRUE, threshold = 0.1)
+nn_credit_two_layers_2 <- neuralnet(f,data=credit_card_matrix_final,
+                                            hidden=c(1,4),
+                               linear.output = FALSE,err.fct = 'ce',
+                               likelihood=TRUE, threshold = 0.1)
+nn_credit_two_layers_3 <- neuralnet(f,data=credit_card_matrix_final,
+                                            hidden=c(5,3),
+                               linear.output = FALSE,err.fct = 'ce',
+                               likelihood=TRUE, threshold = 0.1)
+```
+
+Now we produce a bar plot comparing all built models. 
+```{r message=FALSE, warning=FALSE, echo=-4, fig.align='center', fig.width=5, fig.height=3}
+library(ggplot2); library(dplyr)
+Class_NN_ICs <- tibble('Network' = rep(c("NN_1L","NN_2L_1", "NN_2L_2",
+                                         "NN_2L_3"), each = 3),
+                       'Metric' = rep(c('AIC', 'BIC','CE loss'), length.out=12),
+                       'Value' = c(nn_credit_one_layer$result.matrix[4,1],
+                                  nn_credit_one_layer$result.matrix[5,1],
+                                  nn_credit_one_layer$result.matrix[1,1],
+                                  nn_credit_two_layers_1$result.matrix[4,1],
+                                  nn_credit_two_layers_1$result.matrix[5,1],
+                                  nn_credit_two_layers_1$result.matrix[1,1],
+                                  nn_credit_two_layers_2$result.matrix[4,1],
+                                  nn_credit_two_layers_2$result.matrix[5,1],
+                                  nn_credit_two_layers_2$result.matrix[1,1],
+                                  nn_credit_two_layers_3$result.matrix[4,1],
+                                  nn_credit_two_layers_3$result.matrix[5,1],
+                                  nn_credit_two_layers_3$result.matrix[1,1]))
+nn_ggplot <- Class_NN_ICs %>%
+  ggplot(aes(Network, Value, fill=Metric)) +
+  geom_col(position = 'dodge')  +
+  ggtitle("AIC, BIC, and cross entropy loss of the neural networks")
+nn_ggplot <- nn_ggplot + theme( panel.background = element_rect( fill = "transparent", colour = NA), plot.background = element_rect( fill = "transparent", colour = NA), panel.border = element_rect(fill = NA, colour = "black", size = 1),legend.background = element_rect(fill = "transparent", colour= "NA"))
+nn_ggplot
+```
+
+First recall that a smaller value of AIC and BIC indicates a better model.
+
+In terms of AIC the fourth neural network with 2 hidden layer and 5 and 3 nodes in each layer seemed to be best, while BIC preferred the second neural network with 2 hidden layers and 4 and 1 nodes in each layer. The cross entropy loss agreed with AIC so we would probably choose the fourth neural network. This is an example of one of the many times where information criteria give different answer since they penalise complexity in different ways.
+
+We can also double check the previous comments, and find out which neural network is the one with the smallest value for the cross-entropy loss function, by using the `which.min` command.
+
+```{r}
+which.min(c(nn_credit_one_layer$result.matrix[4,1],
+            nn_credit_two_layers_1$result.matrix[4,1],
+            nn_credit_two_layers_2$result.matrix[4,1],
+            nn_credit_two_layers_3$result.matrix[4,1]))
+which.min(c(nn_credit_one_layer$result.matrix[5,1],
+            nn_credit_two_layers_1$result.matrix[5,1],
+            nn_credit_two_layers_2$result.matrix[5,1],
+            nn_credit_two_layers_3$result.matrix[5,1]))
+which.min(c(nn_credit_one_layer$result.matrix[1,1],
+            nn_credit_two_layers_1$result.matrix[1,1],
+            nn_credit_two_layers_2$result.matrix[1,1],
+            nn_credit_two_layers_3$result.matrix[1,1]))
+```
+
+To predict on the test data, we need to first clean the data as for the training data. 
+```{r}
+# Data pre-processing
+test <- German_test
+test$Credit_amount <- min_max_scale(test$Credit_amount)
+test$Creditability <- as.integer(test$Creditability)-1
+test_credit_card_matrix <- model.matrix(~Account_balance+Purpose+Length_of_cur_employment
+                                   +Credit_amount, data=test)
+test_credit_card_matrix_final <- test_credit_card_matrix[,-1]
+
+# Prediction
+test_pred <- predict(nn_credit_two_layers_3,test_credit_card_matrix_final)
+table(test$Creditability,test_pred>0.5)
+```
+
+`r unhide()`
+
+
+
+<!--chapter:end:02-German.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+suppressPackageStartupMessages({
+  library(webexercises)
+})
+
+knitr::knit_hooks$set(webex.hide = function(before, options, envir) {
+  if (before) {
+    if (is.character(options$webex.hide)) {
+      hide(options$webex.hide)
+    } else {
+      hide()
+    }
+  } else {
+    unhide()
+  }
+})
+```
+# Exercise 3: Dividend data
+
+In this example, our goal is to develop a neural network to determine if a stock pays a dividend or not. The dataset is stored under `dividendinfo.csv`, which includes one response variable and five predictor variables.
+
+* `dividend` (class): A value of 1 indicates that the stock pays a dividend; 0 indicates that the stock that does not pay a dividend. 
+* `fcfps`: Free cash flow per share (in $)
+* `earnings_growth`: Earnings growth in the past year (in %)
+* `de`: Debt to Equity ratio
+* `mcap`: Market Capitalization of the stock
+* `current_ratio`: Current Ratio (or Current Assets/Current Liabilities)
+
+**Task**
+
+1. Read in the data and perform exploratory analysis. What have you observed?
+
+```{r echo=FALSE}
+dividend <- read.csv("dividendinfo.csv")
+```
+
+
+```{r eval=FALSE, webex.hide="Solution"}
+dividend <- read.csv("dividendinfo.csv")
+
+# some example codes for numerical summaries
+summary(dividend)
+library(skimr)
+skim(dividend)
+
+# some example codes for graphical summaries
+pairs(dividend)
+libray(GGally)
+ggpairs(dividend)
+par(mfrow=c(3,2));
+invisible(lapply(2:ncol(dividend),function(i) boxplot(dividend[,i]~dividend$dividend)))
+```
+
+2. Pre-process and split the data to prepare for training and evaluating a neural network. 
+
+`r hide("Hint")` 
+As all variables are continuous and they have quite different ranges, scale them either using standardisation or min-max normalisation. 
+`r unhide()`
+
+`r hide("Solution")` 
+While there are built-in functions such as `scale` to standardise the entire data, the best practice is to split the data into training and test first and then apply standardisation/normalisation. This could avoid information leakage from training to test data. 
+```{r}
+# Data split
+set.seed(1)
+idx <- sample(nrow(dividend),0.8*nrow(dividend))
+train <- dividend[idx,]
+test <- dividend[-idx,]
+
+# option 1: Standardise the data
+means <- apply(train[,2:6], 2, mean)
+sds <- apply(train[,2:6], 2, sd)
+train.std <- scale(train[,2:6])
+train.std <- cbind(train[,1],train.std)
+test.std  <- scale(test[,2:6], means, sds)
+test.std  <- cbind(test[,1],test.std)
+
+# option 2: Normalise the data
+min_max_scale_test <- function(x_tr, x_te){
+  mins <- apply(x_tr, 2, min)
+  maxs <- apply(x_tr, 2, max)
+  x_te <- rbind(mins,maxs, x_te)
+  x_te <- apply(x_te, 2, function(x) (x-x[1])/(x[2]-x[1]))
+  x_te <- x_te[-c(1:2),]
+}
+
+train.norm <-apply(train[,2:6], 2, function(x) (x-min(x))/(max(x)-min(x)) )
+train.norm <-cbind(train[,1],train.norm)
+test.norm  <-min_max_scale_test(train[,2:6], test[,2:6])
+test.norm  <-cbind(test[,1], test.norm)
+```
+`r unhide()`
+
+3. Build a neural network with a single hidden layer, any number of hidden nodes, and the logistic function as the activation function. Interpret the relative importance of variables using the `garson` function. 
+`r hide("Solution")` 
+```{r}
+set.seed(1)
+nn_di <- neuralnet(dividend~., data=train, hidden=c(5), err.fct="ce", act.fct="logistic", linear.output=FALSE, likelihood=TRUE)
+
+garson(nn_di)
+```
+
+We can see that the variable `current_ratio` is the one with the strongest relationship with the response variable `dividend`, followed by `de`, `fcfps` and `mcap`. The variable `earnings_growth` has the least relationship with `dividend`.
+`r unhide()`
+
+4. Fit the above model multiple times using the argument `rep` and select the optimal model. 
+
+`r hide("Solution")` 
+```{r}
+set.seed(1)
+nn_di <- neuralnet(dividend~., data=train, hidden=c(5), err.fct="ce", act.fct="logistic", linear.output=FALSE, likelihood=TRUE, rep=5)
+
+# plot(nn_di)
+plot(nn_di, rep="best")
+```
+
+From the plots (`plot(nn_di)`), we can see that the optimisation algorithm stops at different iterations (from `Steps`) and lead to differnt cross-entropy loss (from `Error`). In general, training the network longer decreases the cross-entropy loss. However, this decrease takes place on the training data set and may not generalise to the test. In other words, training the model longer may increase the risk of overfitting. 
+
+To select the optimal model, we could look at the AIC and BIC values.
+```{r}
+which.min(nn_di$result.matrix[4,]) #AIC
+which.min(nn_di$result.matrix[5,]) #AIC
+```
+AIC and BIC agree in this case and they both choose the third repetition. 
+`r unhide()`
+
+
+
+<!--chapter:end:03-dividend.Rmd-->
+
