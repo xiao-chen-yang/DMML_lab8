@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Introduction to PyTorch | STATS5099 Data Mining and Machine Learning</title>
+  <meta name="description" content="4 Introduction to PyTorch | STATS5099 Data Mining and Machine Learning" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Introduction to PyTorch | STATS5099 Data Mining and Machine Learning" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Introduction to PyTorch | STATS5099 Data Mining and Machine Learning" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="exercise-2-german-data.html"/>
+<link rel="next" href="exercise-3-dividend-data.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="include/webex.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome to DMML Lab 8</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#implementing-neural-networks-in-r"><i class="fa fa-check"></i><b>1.1</b> Implementing neural networks in <code>R</code></a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exercise-1-task-2-in-lecture-notes.html"><a href="exercise-1-task-2-in-lecture-notes.html"><i class="fa fa-check"></i><b>2</b> Exercise 1: Task 2 in lecture notes</a></li>
+<li class="chapter" data-level="3" data-path="exercise-2-german-data.html"><a href="exercise-2-german-data.html"><i class="fa fa-check"></i><b>3</b> Exercise 2: German data</a></li>
+<li class="chapter" data-level="4" data-path="introduction-to-pytorch.html"><a href="introduction-to-pytorch.html"><i class="fa fa-check"></i><b>4</b> Introduction to PyTorch</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="introduction-to-pytorch.html"><a href="introduction-to-pytorch.html#install-pytorch"><i class="fa fa-check"></i><b>4.1</b> Install PyTorch</a></li>
+<li class="chapter" data-level="4.2" data-path="introduction-to-pytorch.html"><a href="introduction-to-pytorch.html#what-is-pytorch"><i class="fa fa-check"></i><b>4.2</b> What is PyTorch?</a></li>
+<li class="chapter" data-level="4.3" data-path="introduction-to-pytorch.html"><a href="introduction-to-pytorch.html#basic-computations-on-tensors"><i class="fa fa-check"></i><b>4.3</b> Basic computations on Tensors</a></li>
+<li class="chapter" data-level="4.4" data-path="introduction-to-pytorch.html"><a href="introduction-to-pytorch.html#neural-networks-in-pytorch"><i class="fa fa-check"></i><b>4.4</b> Neural networks in PyTorch</a></li>
+<li class="chapter" data-level="4.5" data-path="introduction-to-pytorch.html"><a href="introduction-to-pytorch.html#automatic-differentiation-in-pytorch"><i class="fa fa-check"></i><b>4.5</b> Automatic Differentiation in PyTorch</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="exercise-3-dividend-data.html"><a href="exercise-3-dividend-data.html"><i class="fa fa-check"></i><b>5</b> Exercise 3: Dividend data</a>
+<ul>
+<li class="chapter" data-level="" data-path="exercise-3-dividend-data.html"><a href="exercise-3-dividend-data.html#neural-networks-in-r"><i class="fa fa-check"></i>Neural Networks in R</a></li>
+<li class="chapter" data-level="" data-path="exercise-3-dividend-data.html"><a href="exercise-3-dividend-data.html#neural-networks-in-pytorch-1"><i class="fa fa-check"></i>Neural Networks in PyTorch</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">STATS5099 Data Mining and Machine Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduction-to-pytorch" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Introduction to PyTorch<a href="introduction-to-pytorch.html#introduction-to-pytorch" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Acknowledgement: Lab materials on PyTorch are developed on Software Lab 1 of MIT <a href="http://introtodeeplearning.com">Introduction to Deep Learning</a>.</p>
+<div id="install-pytorch" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Install PyTorch<a href="introduction-to-pytorch.html#install-pytorch" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><a href="https://pytorch.org/">PyTorch</a> is a popular deep learning library known for its flexibility and ease of use.</p>
+<p>Let's start by installing PyTorch. There are a few options to install and run PyTorch.</p>
+<p><strong>Option 1: Install and run PyTorch locally.</strong></p>
+<p>Depending on operating system (OS), Python version and availability of cuda-enabled GPUs, you can find the install command on <a href="https://pytorch.org/get-started/locally/" class="uri">https://pytorch.org/get-started/locally/</a> and install using <code>pip</code>.</p>
+<p>For example, on Windows OS with CPU only, the install command is:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="introduction-to-pytorch.html#cb21-1" tabindex="-1"></a>pip3 install torch torchvision torchaudio</span></code></pre></div>
+<p><strong>Option 2</strong>: Use Google Colab</p>
+<p>Another option for accessing free GPUs is by using Google Colab, which is an alternative to installing Python on your own computer.</p>
+<p><a href="https://colab.research.google.com/" class="uri">https://colab.research.google.com/</a></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="introduction-to-pytorch.html#cb22-1" tabindex="-1"></a><span class="op">!</span>pip3 install torch torchaudio torchvision torchtext torchdata</span></code></pre></div>
+<p>You can verify if PyTorch is installed successfully by running:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="introduction-to-pytorch.html#cb23-1" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb23-2"><a href="introduction-to-pytorch.html#cb23-2" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="introduction-to-pytorch.html#cb23-3" tabindex="-1"></a><span class="bu">print</span>(torch.__version__) <span class="co"># Check version</span></span></code></pre></div>
+<pre><code>## 2.6.0+cpu</code></pre>
+<p>If it is successful, continue to load a couple of dependencies which will be useful for this lab.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="introduction-to-pytorch.html#cb25-1" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb25-2"><a href="introduction-to-pytorch.html#cb25-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb25-3"><a href="introduction-to-pytorch.html#cb25-3" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div>
+</div>
+<div id="what-is-pytorch" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> What is PyTorch?<a href="introduction-to-pytorch.html#what-is-pytorch" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>PyTorch is a machine learning library. At its core, PyTorch provides an interface for creating and manipulating <a href="https://pytorch.org/docs/stable/tensors.html">tensors</a>. A tensor is a multi-dimensional array where the number of dimensions is known as its
+rank.</p>
+<ul>
+<li>A rank-0 tensor is just a single number, or a scalar</li>
+<li>A rank-1 tensor is also called a vector</li>
+<li>A rank-2 tensor is also called a matrix</li>
+</ul>
+<p>PyTorch provides the ability to perform computation on these tensors, define neural networks, and train them efficiently.</p>
+<p>The <a href="https://pytorch.org/docs/stable/generated/torch.Tensor.shape.html#torch.Tensor.shape"><code>shape</code></a> of a PyTorch tensor defines its number of dimensions and the size of each dimension. The <code>ndim</code> or <a href="https://pytorch.org/docs/stable/generated/torch.Tensor.dim.html#torch.Tensor.dim"><code>dim</code></a> of a PyTorch tensor provides the number of dimensions (n-dimensions), and you can also think of this as the tensor's order or degree.</p>
+<p>Let's start by creating some tensors and inspecting their properties:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="introduction-to-pytorch.html#cb26-1" tabindex="-1"></a>integer <span class="op">=</span> torch.tensor(<span class="dv">1234</span>)</span>
+<span id="cb26-2"><a href="introduction-to-pytorch.html#cb26-2" tabindex="-1"></a>decimal <span class="op">=</span> torch.tensor(<span class="fl">3.14159265359</span>)</span>
+<span id="cb26-3"><a href="introduction-to-pytorch.html#cb26-3" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="introduction-to-pytorch.html#cb26-4" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;`integer` is a </span><span class="sc">{</span>integer<span class="sc">.</span>ndim<span class="sc">}</span><span class="ss">-d Tensor: </span><span class="sc">{</span>integer<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## `integer` is a 0-d Tensor: 1234</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="introduction-to-pytorch.html#cb28-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;`decimal` is a </span><span class="sc">{</span>decimal<span class="sc">.</span>ndim<span class="sc">}</span><span class="ss">-d Tensor: </span><span class="sc">{</span>decimal<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## `decimal` is a 0-d Tensor: 3.1415927410125732</code></pre>
+<p>Vectors and lists can be used to create 1-d tensors:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="introduction-to-pytorch.html#cb30-1" tabindex="-1"></a>fibonacci <span class="op">=</span> torch.tensor([<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>])</span>
+<span id="cb30-2"><a href="introduction-to-pytorch.html#cb30-2" tabindex="-1"></a>count_to_100 <span class="op">=</span> torch.tensor(<span class="bu">range</span>(<span class="dv">100</span>))</span>
+<span id="cb30-3"><a href="introduction-to-pytorch.html#cb30-3" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="introduction-to-pytorch.html#cb30-4" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;`fibonacci` is a </span><span class="sc">{</span>fibonacci<span class="sc">.</span>ndim<span class="sc">}</span><span class="ss">-d Tensor with shape: </span><span class="sc">{</span>fibonacci<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## `fibonacci` is a 1-d Tensor with shape: torch.Size([6])</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="introduction-to-pytorch.html#cb32-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;`count_to_100` is a </span><span class="sc">{</span>count_to_100<span class="sc">.</span>ndim<span class="sc">}</span><span class="ss">-d Tensor with shape: </span><span class="sc">{</span>count_to_100<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## `count_to_100` is a 1-d Tensor with shape: torch.Size([100])</code></pre>
+<p>Next, let’s create 2-d (i.e., matrices) and higher-rank tensors. In image processing and computer vision, we will use 4-d Tensors with dimensions corresponding to batch size, number of color channels, image height, and image width.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="introduction-to-pytorch.html#cb34-1" tabindex="-1"></a><span class="co">### Defining higher-order Tensors</span></span>
+<span id="cb34-2"><a href="introduction-to-pytorch.html#cb34-2" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="introduction-to-pytorch.html#cb34-3" tabindex="-1"></a><span class="co">&#39;&#39;&#39;TODO: Define a 2-d Tensor&#39;&#39;&#39;</span></span>
+<span id="cb34-4"><a href="introduction-to-pytorch.html#cb34-4" tabindex="-1"></a>matrix <span class="op">=</span> <span class="co"># </span><span class="al">TODO</span></span>
+<span id="cb34-5"><a href="introduction-to-pytorch.html#cb34-5" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="introduction-to-pytorch.html#cb34-6" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">isinstance</span>(matrix, torch.Tensor), <span class="st">&quot;matrix must be a torch Tensor object&quot;</span></span>
+<span id="cb34-7"><a href="introduction-to-pytorch.html#cb34-7" tabindex="-1"></a><span class="cf">assert</span> matrix.ndim <span class="op">==</span> <span class="dv">2</span></span>
+<span id="cb34-8"><a href="introduction-to-pytorch.html#cb34-8" tabindex="-1"></a></span>
+<span id="cb34-9"><a href="introduction-to-pytorch.html#cb34-9" tabindex="-1"></a><span class="co">&#39;&#39;&#39;TODO: Define a 4-d Tensor.&#39;&#39;&#39;</span></span>
+<span id="cb34-10"><a href="introduction-to-pytorch.html#cb34-10" tabindex="-1"></a><span class="co"># Use torch.zeros to initialize a 4-d Tensor of zeros with size 10 x 3 x 256 x 256.</span></span>
+<span id="cb34-11"><a href="introduction-to-pytorch.html#cb34-11" tabindex="-1"></a><span class="co">#   You can think of this as 10 images where each image is RGB 256 x 256.</span></span>
+<span id="cb34-12"><a href="introduction-to-pytorch.html#cb34-12" tabindex="-1"></a>images <span class="op">=</span> <span class="co"># </span><span class="al">TODO</span></span>
+<span id="cb34-13"><a href="introduction-to-pytorch.html#cb34-13" tabindex="-1"></a></span>
+<span id="cb34-14"><a href="introduction-to-pytorch.html#cb34-14" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">isinstance</span>(images, torch.Tensor), <span class="st">&quot;images must be a torch Tensor object&quot;</span></span>
+<span id="cb34-15"><a href="introduction-to-pytorch.html#cb34-15" tabindex="-1"></a><span class="cf">assert</span> images.ndim <span class="op">==</span> <span class="dv">4</span>, <span class="st">&quot;images must have 4 dimensions&quot;</span></span>
+<span id="cb34-16"><a href="introduction-to-pytorch.html#cb34-16" tabindex="-1"></a><span class="cf">assert</span> images.shape <span class="op">==</span> (<span class="dv">10</span>, <span class="dv">3</span>, <span class="dv">256</span>, <span class="dv">256</span>), <span class="st">&quot;images is incorrect shape&quot;</span></span>
+<span id="cb34-17"><a href="introduction-to-pytorch.html#cb34-17" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;images is a </span><span class="sc">{</span>images<span class="sc">.</span>ndim<span class="sc">}</span><span class="ss">-d Tensor with shape: </span><span class="sc">{</span>images<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="introduction-to-pytorch.html#cb35-1" tabindex="-1"></a>matrix <span class="op">=</span> torch.tensor([[<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>], [<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>]]) <span class="co">#An example of 2-d tensor</span></span>
+<span id="cb35-2"><a href="introduction-to-pytorch.html#cb35-2" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="introduction-to-pytorch.html#cb35-3" tabindex="-1"></a>images <span class="op">=</span> torch.tensor(torch.zeros(<span class="dv">10</span>,<span class="dv">3</span>,<span class="dv">256</span>,<span class="dv">256</span>))</span>
+<span id="cb35-4"><a href="introduction-to-pytorch.html#cb35-4" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;images is a </span><span class="sc">{</span>images<span class="sc">.</span>ndim<span class="sc">}</span><span class="ss">-d Tensor with shape: </span><span class="sc">{</span>images<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## images is a 4-d Tensor with shape: torch.Size([10, 3, 256, 256])</code></pre>
+</div>
+<p>As you have seen, the <code>shape</code> of a tensor provides the number of elements in each tensor dimension. The <code>shape</code> is quite useful, and we'll use it often. You can also use slicing to access subtensors within a higher-rank tensor:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="introduction-to-pytorch.html#cb37-1" tabindex="-1"></a>row_vector <span class="op">=</span> matrix[<span class="dv">1</span>]</span>
+<span id="cb37-2"><a href="introduction-to-pytorch.html#cb37-2" tabindex="-1"></a>column_vector <span class="op">=</span> matrix[:, <span class="dv">1</span>]</span>
+<span id="cb37-3"><a href="introduction-to-pytorch.html#cb37-3" tabindex="-1"></a>scalar <span class="op">=</span> matrix[<span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb37-4"><a href="introduction-to-pytorch.html#cb37-4" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="introduction-to-pytorch.html#cb37-5" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;`row_vector`: </span><span class="sc">{</span>row_vector<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## `row_vector`: tensor([2, 2, 2])</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="introduction-to-pytorch.html#cb39-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;`column_vector`: </span><span class="sc">{</span>column_vector<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## `column_vector`: tensor([1, 2])</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="introduction-to-pytorch.html#cb41-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;`scalar`: </span><span class="sc">{</span>scalar<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## `scalar`: 1</code></pre>
+</div>
+<div id="basic-computations-on-tensors" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Basic computations on Tensors<a href="introduction-to-pytorch.html#basic-computations-on-tensors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Next we'll do some calculations. First, we'll create two tensors that have a constant value then add them together.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="introduction-to-pytorch.html#cb43-1" tabindex="-1"></a>a <span class="op">=</span> torch.tensor(<span class="dv">15</span>)</span>
+<span id="cb43-2"><a href="introduction-to-pytorch.html#cb43-2" tabindex="-1"></a>b <span class="op">=</span> torch.tensor(<span class="dv">61</span>)</span>
+<span id="cb43-3"><a href="introduction-to-pytorch.html#cb43-3" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="introduction-to-pytorch.html#cb43-4" tabindex="-1"></a><span class="co"># add the two constants together and print</span></span>
+<span id="cb43-5"><a href="introduction-to-pytorch.html#cb43-5" tabindex="-1"></a>c1 <span class="op">=</span> torch.add(a, b)</span>
+<span id="cb43-6"><a href="introduction-to-pytorch.html#cb43-6" tabindex="-1"></a>c2 <span class="op">=</span> a <span class="op">+</span> b  <span class="co"># PyTorch overrides the &quot;+&quot; operation so that it is able to act on Tensors</span></span>
+<span id="cb43-7"><a href="introduction-to-pytorch.html#cb43-7" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;c1: </span><span class="sc">{</span>c1<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## c1: 76</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="introduction-to-pytorch.html#cb45-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;c2: </span><span class="sc">{</span>c2<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## c2: 76</code></pre>
+<p>We can repeat this exercise with rank-2 tensors now and also explore some other computations.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="introduction-to-pytorch.html#cb47-1" tabindex="-1"></a><span class="co"># create constant tensors</span></span>
+<span id="cb47-2"><a href="introduction-to-pytorch.html#cb47-2" tabindex="-1"></a>a <span class="op">=</span> torch.tensor([[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>],[<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]])</span>
+<span id="cb47-3"><a href="introduction-to-pytorch.html#cb47-3" tabindex="-1"></a>b <span class="op">=</span> torch.tensor([[<span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>],[<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>]])</span>
+<span id="cb47-4"><a href="introduction-to-pytorch.html#cb47-4" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="introduction-to-pytorch.html#cb47-5" tabindex="-1"></a><span class="co"># add them together and print</span></span>
+<span id="cb47-6"><a href="introduction-to-pytorch.html#cb47-6" tabindex="-1"></a>c1 <span class="op">=</span> torch.add(a, b)</span>
+<span id="cb47-7"><a href="introduction-to-pytorch.html#cb47-7" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;c1: </span><span class="sc">{</span>c1<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## c1: tensor([[7, 7, 7],
+##         [7, 7, 7]])</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="introduction-to-pytorch.html#cb49-1" tabindex="-1"></a><span class="co"># elementwise multiplication</span></span>
+<span id="cb49-2"><a href="introduction-to-pytorch.html#cb49-2" tabindex="-1"></a>c2 <span class="op">=</span> torch.multiply(a, b)</span>
+<span id="cb49-3"><a href="introduction-to-pytorch.html#cb49-3" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;c2: </span><span class="sc">{</span>c2<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## c2: tensor([[ 6, 10, 12],
+##         [12, 10,  6]])</code></pre>
+</div>
+<div id="neural-networks-in-pytorch" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Neural networks in PyTorch<a href="introduction-to-pytorch.html#neural-networks-in-pytorch" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can also define neural networks in PyTorch. PyTorch uses <a href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html"><code>torch.nn.Module</code></a>, which serves as a base class for all neural network modules in PyTorch and thus provides a framework for building and training neural networks.</p>
+<p>Let's consider the example of a simple perceptron defined by just one dense (aka fully-connected or linear) layer: <span class="math inline">\(y = \sigma(Wx + b)\)</span>, where <span class="math inline">\(W\)</span> represents a matrix of weights, <span class="math inline">\(b\)</span> is a bias, <span class="math inline">\(x\)</span> is the input, <span class="math inline">\(\sigma\)</span> is the sigmoid activation function, and <span class="math inline">\(y\)</span> is the output.</p>
+<p><img src="https://raw.githubusercontent.com/MITDeepLearning/introtodeeplearning/2025/lab1/img/computation-graph-2.png" /></p>
+<p>In PyTorch, we define layers using <code>torch.nn.Module</code>, which provides a way to create and organise the building blocks of a neural network. To create a custom layer, we define a new class that is based on <code>nn.Module</code>. Inside this class, we specify the layer's parameters as attributes and implement a function called <a href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module.forward"><code>forward</code></a>. The <code>forward</code> function defines how the input data is processed by this layer during the forward pass.</p>
+<p>Every time we create a new type of layer, we need to define what happens to the input in the <code>forward</code> function. This ensures that our layer performs the correct computation at each step of training or inference.</p>
+<p>Let's write a dense layer class to implement a perceptron defined above.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="introduction-to-pytorch.html#cb51-1" tabindex="-1"></a><span class="co">### Defining a dense layer</span></span>
+<span id="cb51-2"><a href="introduction-to-pytorch.html#cb51-2" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="introduction-to-pytorch.html#cb51-3" tabindex="-1"></a><span class="co"># num_inputs: number of input nodes</span></span>
+<span id="cb51-4"><a href="introduction-to-pytorch.html#cb51-4" tabindex="-1"></a><span class="co"># num_outputs: number of output nodes</span></span>
+<span id="cb51-5"><a href="introduction-to-pytorch.html#cb51-5" tabindex="-1"></a><span class="co"># x: input to the layer</span></span>
+<span id="cb51-6"><a href="introduction-to-pytorch.html#cb51-6" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="introduction-to-pytorch.html#cb51-7" tabindex="-1"></a><span class="kw">class</span> OurDenseLayer(torch.nn.Module):</span>
+<span id="cb51-8"><a href="introduction-to-pytorch.html#cb51-8" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, num_inputs, num_outputs):</span>
+<span id="cb51-9"><a href="introduction-to-pytorch.html#cb51-9" tabindex="-1"></a>        <span class="bu">super</span>(OurDenseLayer, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb51-10"><a href="introduction-to-pytorch.html#cb51-10" tabindex="-1"></a>        <span class="co"># Define and initialise parameters: a weight matrix W and bias b</span></span>
+<span id="cb51-11"><a href="introduction-to-pytorch.html#cb51-11" tabindex="-1"></a>        <span class="co"># Note that the parameter initialise is random!</span></span>
+<span id="cb51-12"><a href="introduction-to-pytorch.html#cb51-12" tabindex="-1"></a>        <span class="va">self</span>.W <span class="op">=</span> torch.nn.Parameter(torch.randn(num_inputs, num_outputs))</span>
+<span id="cb51-13"><a href="introduction-to-pytorch.html#cb51-13" tabindex="-1"></a>        <span class="va">self</span>.bias <span class="op">=</span> torch.nn.Parameter(torch.randn(num_outputs))</span>
+<span id="cb51-14"><a href="introduction-to-pytorch.html#cb51-14" tabindex="-1"></a></span>
+<span id="cb51-15"><a href="introduction-to-pytorch.html#cb51-15" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb51-16"><a href="introduction-to-pytorch.html#cb51-16" tabindex="-1"></a>        <span class="co">&#39;&#39;&#39;TODO: define the operation for z (hint: use torch.matmul).&#39;&#39;&#39;</span></span>
+<span id="cb51-17"><a href="introduction-to-pytorch.html#cb51-17" tabindex="-1"></a>        z <span class="op">=</span> <span class="co"># </span><span class="al">TODO</span></span>
+<span id="cb51-18"><a href="introduction-to-pytorch.html#cb51-18" tabindex="-1"></a></span>
+<span id="cb51-19"><a href="introduction-to-pytorch.html#cb51-19" tabindex="-1"></a>        <span class="co">&#39;&#39;&#39;TODO: define the operation for out (hint: use torch.sigmoid).&#39;&#39;&#39;</span></span>
+<span id="cb51-20"><a href="introduction-to-pytorch.html#cb51-20" tabindex="-1"></a>        y <span class="op">=</span> <span class="co"># </span><span class="al">TODO</span></span>
+<span id="cb51-21"><a href="introduction-to-pytorch.html#cb51-21" tabindex="-1"></a>        <span class="cf">return</span> y</span></code></pre></div>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<div class="sourceCode" id="cb52"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="introduction-to-pytorch.html#cb52-1" tabindex="-1"></a><span class="kw">class</span> OurDenseLayer(torch.nn.Module):</span>
+<span id="cb52-2"><a href="introduction-to-pytorch.html#cb52-2" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, num_inputs, num_outputs):</span>
+<span id="cb52-3"><a href="introduction-to-pytorch.html#cb52-3" tabindex="-1"></a>        <span class="bu">super</span>(OurDenseLayer, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb52-4"><a href="introduction-to-pytorch.html#cb52-4" tabindex="-1"></a>        <span class="va">self</span>.W <span class="op">=</span> torch.nn.Parameter(torch.randn(num_inputs, num_outputs))</span>
+<span id="cb52-5"><a href="introduction-to-pytorch.html#cb52-5" tabindex="-1"></a>        <span class="va">self</span>.bias <span class="op">=</span> torch.nn.Parameter(torch.randn(num_outputs))</span>
+<span id="cb52-6"><a href="introduction-to-pytorch.html#cb52-6" tabindex="-1"></a></span>
+<span id="cb52-7"><a href="introduction-to-pytorch.html#cb52-7" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb52-8"><a href="introduction-to-pytorch.html#cb52-8" tabindex="-1"></a>        z <span class="op">=</span> torch.matmul(x, <span class="va">self</span>.W) <span class="op">+</span> <span class="va">self</span>.bias</span>
+<span id="cb52-9"><a href="introduction-to-pytorch.html#cb52-9" tabindex="-1"></a>        y <span class="op">=</span> torch.sigmoid(z)</span>
+<span id="cb52-10"><a href="introduction-to-pytorch.html#cb52-10" tabindex="-1"></a>        <span class="cf">return</span> y</span></code></pre></div>
+</div>
+<p>Now, let's test the output of our layer.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb53-1"><a href="introduction-to-pytorch.html#cb53-1" tabindex="-1"></a><span class="co"># Define a layer and test the output</span></span>
+<span id="cb53-2"><a href="introduction-to-pytorch.html#cb53-2" tabindex="-1"></a>num_inputs <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb53-3"><a href="introduction-to-pytorch.html#cb53-3" tabindex="-1"></a>num_outputs <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb53-4"><a href="introduction-to-pytorch.html#cb53-4" tabindex="-1"></a>layer <span class="op">=</span> OurDenseLayer(num_inputs, num_outputs)</span>
+<span id="cb53-5"><a href="introduction-to-pytorch.html#cb53-5" tabindex="-1"></a>x_input <span class="op">=</span> torch.tensor([[<span class="dv">1</span>, <span class="fl">2.</span>]])</span>
+<span id="cb53-6"><a href="introduction-to-pytorch.html#cb53-6" tabindex="-1"></a>y <span class="op">=</span> layer(x_input)</span>
+<span id="cb53-7"><a href="introduction-to-pytorch.html#cb53-7" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="introduction-to-pytorch.html#cb53-8" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;input shape: </span><span class="sc">{</span>x_input<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## input shape: torch.Size([1, 2])</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb55-1"><a href="introduction-to-pytorch.html#cb55-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;output shape: </span><span class="sc">{</span>y<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## output shape: torch.Size([1, 3])</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb57-1"><a href="introduction-to-pytorch.html#cb57-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;output result: </span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## output result: tensor([[0.0215, 0.8477, 0.6351]], grad_fn=&lt;SigmoidBackward0&gt;)</code></pre>
+<p>Conveniently, PyTorch has defined a number of <code>nn.Modules</code> (or Layers) that are commonly used in neural networks, for example a <a href="https://pytorch.org/docs/stable/generated/torch.nn.Linear.html"><code>nn.Linear</code></a> or <a href="https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html"><code>nn.Sigmoid</code></a> module.</p>
+<p>Now, instead of using a single <code>Module</code> to define our simple neural network, we'll use the <a href="https://pytorch.org/docs/stable/generated/torch.nn.Sequential.html"><code>nn.Sequential</code></a> module from PyTorch and a single <a href="https://pytorch.org/docs/stable/generated/torch.nn.Linear.html"><code>nn.Linear</code></a> layer to define our network. With the <code>Sequential</code> API, you can readily create neural networks by stacking together layers like building blocks.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb59-1"><a href="introduction-to-pytorch.html#cb59-1" tabindex="-1"></a><span class="co">### Defining a neural network using the PyTorch Sequential API</span></span>
+<span id="cb59-2"><a href="introduction-to-pytorch.html#cb59-2" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="introduction-to-pytorch.html#cb59-3" tabindex="-1"></a><span class="co"># define the number of inputs and outputs</span></span>
+<span id="cb59-4"><a href="introduction-to-pytorch.html#cb59-4" tabindex="-1"></a>n_input_nodes <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb59-5"><a href="introduction-to-pytorch.html#cb59-5" tabindex="-1"></a>n_output_nodes <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb59-6"><a href="introduction-to-pytorch.html#cb59-6" tabindex="-1"></a></span>
+<span id="cb59-7"><a href="introduction-to-pytorch.html#cb59-7" tabindex="-1"></a><span class="co"># Define the model</span></span>
+<span id="cb59-8"><a href="introduction-to-pytorch.html#cb59-8" tabindex="-1"></a><span class="co">&#39;&#39;&#39;TODO: Use the Sequential API to define a neural network with a</span></span>
+<span id="cb59-9"><a href="introduction-to-pytorch.html#cb59-9" tabindex="-1"></a><span class="co">    single linear (dense!) layer, followed by non-linearity to compute z&#39;&#39;&#39;</span></span>
+<span id="cb59-10"><a href="introduction-to-pytorch.html#cb59-10" tabindex="-1"></a>model <span class="op">=</span> nn.Sequential( <span class="st">&#39;&#39;&#39; TODO &#39;&#39;&#39;</span> )</span></code></pre></div>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<div class="sourceCode" id="cb60"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb60-1"><a href="introduction-to-pytorch.html#cb60-1" tabindex="-1"></a>n_input_nodes <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb60-2"><a href="introduction-to-pytorch.html#cb60-2" tabindex="-1"></a>n_output_nodes <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb60-3"><a href="introduction-to-pytorch.html#cb60-3" tabindex="-1"></a>model <span class="op">=</span> nn.Sequential(</span>
+<span id="cb60-4"><a href="introduction-to-pytorch.html#cb60-4" tabindex="-1"></a>    nn.Linear(n_input_nodes, n_output_nodes),</span>
+<span id="cb60-5"><a href="introduction-to-pytorch.html#cb60-5" tabindex="-1"></a>    nn.Sigmoid()</span>
+<span id="cb60-6"><a href="introduction-to-pytorch.html#cb60-6" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<p>We've defined our model using the Sequential API. Now, we can test it out using an example input:</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb61-1"><a href="introduction-to-pytorch.html#cb61-1" tabindex="-1"></a><span class="co"># Test the model with example input</span></span>
+<span id="cb61-2"><a href="introduction-to-pytorch.html#cb61-2" tabindex="-1"></a>x_input <span class="op">=</span> torch.tensor([[<span class="dv">1</span>, <span class="fl">2.</span>]])</span>
+<span id="cb61-3"><a href="introduction-to-pytorch.html#cb61-3" tabindex="-1"></a>model_output <span class="op">=</span> model(x_input)</span>
+<span id="cb61-4"><a href="introduction-to-pytorch.html#cb61-4" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;input shape: </span><span class="sc">{</span>x_input<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## input shape: torch.Size([1, 2])</code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb63-1"><a href="introduction-to-pytorch.html#cb63-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;output shape: </span><span class="sc">{</span>y<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## output shape: torch.Size([1, 3])</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb65-1"><a href="introduction-to-pytorch.html#cb65-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;output result: </span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## output result: tensor([[0.0215, 0.8477, 0.6351]], grad_fn=&lt;SigmoidBackward0&gt;)</code></pre>
+<p>With PyTorch, we can create more flexible models by building on <a href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html"><code>nn.Module</code></a> (technically, it is known as subclass <code>nn.Module</code>, inheriting the properties and behaviors of the base class, i.e. <code>nn.Module</code> in this case). The <code>nn.Module</code> class allows us to group layers together flexibly to define new architectures.</p>
+<p>As we saw earlier with <code>OurDenseLayer</code>, we can subclass <code>nn.Module</code> to create a class for our model. Inside this class, we define the layers we need and specify how data moves through them using the <code>forward</code> function. This approach gives us the flexibility to create custom layers, custom training loops, custom activation functions, and entirely new model architectures. Let's define the same neural network model as above (i.e., Linear layer with an activation function after it), now using a class-based approach and PyTorch's built-in linear layer from <code>nn.Linear</code>.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb67-1"><a href="introduction-to-pytorch.html#cb67-1" tabindex="-1"></a><span class="co">### Defining a model using subclassing</span></span>
+<span id="cb67-2"><a href="introduction-to-pytorch.html#cb67-2" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="introduction-to-pytorch.html#cb67-3" tabindex="-1"></a><span class="kw">class</span> LinearWithSigmoidActivation(nn.Module):</span>
+<span id="cb67-4"><a href="introduction-to-pytorch.html#cb67-4" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, num_inputs, num_outputs):</span>
+<span id="cb67-5"><a href="introduction-to-pytorch.html#cb67-5" tabindex="-1"></a>        <span class="bu">super</span>(LinearWithSigmoidActivation, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb67-6"><a href="introduction-to-pytorch.html#cb67-6" tabindex="-1"></a>        <span class="co">&#39;&#39;&#39;TODO: define a model with a single Linear layer and sigmoid activation.&#39;&#39;&#39;</span></span>
+<span id="cb67-7"><a href="introduction-to-pytorch.html#cb67-7" tabindex="-1"></a>        <span class="va">self</span>.linear <span class="op">=</span> <span class="st">&#39;&#39;&#39;TODO: linear layer&#39;&#39;&#39;</span></span>
+<span id="cb67-8"><a href="introduction-to-pytorch.html#cb67-8" tabindex="-1"></a>        <span class="va">self</span>.activation <span class="op">=</span> <span class="st">&#39;&#39;&#39;TODO: sigmoid activation&#39;&#39;&#39;</span></span>
+<span id="cb67-9"><a href="introduction-to-pytorch.html#cb67-9" tabindex="-1"></a></span>
+<span id="cb67-10"><a href="introduction-to-pytorch.html#cb67-10" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, inputs):</span>
+<span id="cb67-11"><a href="introduction-to-pytorch.html#cb67-11" tabindex="-1"></a>        linear_output <span class="op">=</span> <span class="va">self</span>.linear(inputs)</span>
+<span id="cb67-12"><a href="introduction-to-pytorch.html#cb67-12" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.activation(linear_output)</span>
+<span id="cb67-13"><a href="introduction-to-pytorch.html#cb67-13" tabindex="-1"></a>        <span class="cf">return</span> output</span></code></pre></div>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<div class="sourceCode" id="cb68"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb68-1"><a href="introduction-to-pytorch.html#cb68-1" tabindex="-1"></a><span class="kw">class</span> LinearWithSigmoidActivation(nn.Module):</span>
+<span id="cb68-2"><a href="introduction-to-pytorch.html#cb68-2" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, num_inputs, num_outputs):</span>
+<span id="cb68-3"><a href="introduction-to-pytorch.html#cb68-3" tabindex="-1"></a>        <span class="bu">super</span>(LinearWithSigmoidActivation, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb68-4"><a href="introduction-to-pytorch.html#cb68-4" tabindex="-1"></a>        <span class="va">self</span>.linear <span class="op">=</span> nn.Linear(num_inputs, num_outputs)</span>
+<span id="cb68-5"><a href="introduction-to-pytorch.html#cb68-5" tabindex="-1"></a>        <span class="va">self</span>.activation <span class="op">=</span> nn.Sigmoid()</span>
+<span id="cb68-6"><a href="introduction-to-pytorch.html#cb68-6" tabindex="-1"></a></span>
+<span id="cb68-7"><a href="introduction-to-pytorch.html#cb68-7" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, inputs):</span>
+<span id="cb68-8"><a href="introduction-to-pytorch.html#cb68-8" tabindex="-1"></a>        linear_output <span class="op">=</span> <span class="va">self</span>.linear(inputs)</span>
+<span id="cb68-9"><a href="introduction-to-pytorch.html#cb68-9" tabindex="-1"></a>        output <span class="op">=</span> <span class="va">self</span>.activation(linear_output)</span>
+<span id="cb68-10"><a href="introduction-to-pytorch.html#cb68-10" tabindex="-1"></a>        <span class="cf">return</span> output</span></code></pre></div>
+</div>
+<p>Let's test out our new model, using an example input, setting <code>n_input_nodes=2</code> and <code>n_output_nodes=3</code> as before.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb69-1"><a href="introduction-to-pytorch.html#cb69-1" tabindex="-1"></a>n_input_nodes <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb69-2"><a href="introduction-to-pytorch.html#cb69-2" tabindex="-1"></a>n_output_nodes <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb69-3"><a href="introduction-to-pytorch.html#cb69-3" tabindex="-1"></a>model <span class="op">=</span> LinearWithSigmoidActivation(n_input_nodes, n_output_nodes)</span>
+<span id="cb69-4"><a href="introduction-to-pytorch.html#cb69-4" tabindex="-1"></a>x_input <span class="op">=</span> torch.tensor([[<span class="dv">1</span>, <span class="fl">2.</span>]])</span>
+<span id="cb69-5"><a href="introduction-to-pytorch.html#cb69-5" tabindex="-1"></a>y <span class="op">=</span> model(x_input)</span>
+<span id="cb69-6"><a href="introduction-to-pytorch.html#cb69-6" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;input shape: </span><span class="sc">{</span>x_input<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## input shape: torch.Size([1, 2])</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb71-1"><a href="introduction-to-pytorch.html#cb71-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;output shape: </span><span class="sc">{</span>y<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## output shape: torch.Size([1, 3])</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb73-1"><a href="introduction-to-pytorch.html#cb73-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;output result: </span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## output result: tensor([[0.6355, 0.2081, 0.3705]], grad_fn=&lt;SigmoidBackward0&gt;)</code></pre>
+</div>
+<div id="automatic-differentiation-in-pytorch" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Automatic Differentiation in PyTorch<a href="introduction-to-pytorch.html#automatic-differentiation-in-pytorch" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In PyTorch, <a href="https://pytorch.org/docs/stable/autograd.html"><code>torch.autograd</code></a> is used for <a href="https://en.wikipedia.org/wiki/Automatic_differentiation">automatic differentiation</a>, which is critical for training deep learning models with <a href="https://en.wikipedia.org/wiki/Backpropagation">backpropagation</a>.</p>
+<p>We will use the PyTorch <a href="https://pytorch.org/docs/stable/generated/torch.Tensor.backward.html"><code>.backward()</code></a> method to trace operations for computing gradients. On a tensor, the <a href="https://pytorch.org/docs/stable/generated/torch.Tensor.requires_grad_.html"><code>requires_grad</code></a> attribute controls whether autograd should record operations on that tensor. When a forward pass is made through the network, PyTorch records all the operations that occur; then, to compute the gradient, the <code>backward()</code> method is called to perform backpropagation.</p>
+<p>Let's compute the gradient of $ y = x^2 $:</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb75-1"><a href="introduction-to-pytorch.html#cb75-1" tabindex="-1"></a><span class="co">### Gradient computation</span></span>
+<span id="cb75-2"><a href="introduction-to-pytorch.html#cb75-2" tabindex="-1"></a></span>
+<span id="cb75-3"><a href="introduction-to-pytorch.html#cb75-3" tabindex="-1"></a><span class="co"># y = x^2</span></span>
+<span id="cb75-4"><a href="introduction-to-pytorch.html#cb75-4" tabindex="-1"></a><span class="co"># Example: x = 3.0</span></span>
+<span id="cb75-5"><a href="introduction-to-pytorch.html#cb75-5" tabindex="-1"></a>x <span class="op">=</span> torch.tensor(<span class="fl">3.0</span>, requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb75-6"><a href="introduction-to-pytorch.html#cb75-6" tabindex="-1"></a>y <span class="op">=</span> x <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb75-7"><a href="introduction-to-pytorch.html#cb75-7" tabindex="-1"></a>y.backward()  <span class="co"># Compute the gradient</span></span>
+<span id="cb75-8"><a href="introduction-to-pytorch.html#cb75-8" tabindex="-1"></a></span>
+<span id="cb75-9"><a href="introduction-to-pytorch.html#cb75-9" tabindex="-1"></a>dy_dx <span class="op">=</span> x.grad</span>
+<span id="cb75-10"><a href="introduction-to-pytorch.html#cb75-10" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;dy_dx of y=x^2 at x=3.0 is: &quot;</span>, dy_dx)</span></code></pre></div>
+<pre><code>## dy_dx of y=x^2 at x=3.0 is:  tensor(6.)</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb77-1"><a href="introduction-to-pytorch.html#cb77-1" tabindex="-1"></a><span class="cf">assert</span> dy_dx <span class="op">==</span> <span class="fl">6.0</span></span></code></pre></div>
+<p>In training neural networks, we use differentiation and stochastic gradient descent (SGD) to optimise a loss function. Now that we have a sense of how PyTorch's autograd can be used to compute and access derivatives, we will look at an example where we use automatic differentiation and SGD to find the minimum of $ L=(x-x_f)^2 $. Here <span class="math inline">\(x_f\)</span> is a variable for a desired value we are trying to optimize for; <span class="math inline">\(L\)</span> represents a loss that we are trying to minimize. While we can clearly solve this problem analytically ($ x_{min}=x_f $), considering how we can compute this using PyTorch's autograd sets us up nicely for future activities where we use gradient descent to optimise entire neural network losses.</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb78-1"><a href="introduction-to-pytorch.html#cb78-1" tabindex="-1"></a><span class="co">### Function minimization with autograd and gradient descent</span></span>
+<span id="cb78-2"><a href="introduction-to-pytorch.html#cb78-2" tabindex="-1"></a></span>
+<span id="cb78-3"><a href="introduction-to-pytorch.html#cb78-3" tabindex="-1"></a><span class="co"># Initialize a random value for our intial x</span></span>
+<span id="cb78-4"><a href="introduction-to-pytorch.html#cb78-4" tabindex="-1"></a>x <span class="op">=</span> torch.randn(<span class="dv">1</span>)</span>
+<span id="cb78-5"><a href="introduction-to-pytorch.html#cb78-5" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;Initializing x=</span><span class="sc">{</span>x<span class="sc">.</span>item()<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb78-6"><a href="introduction-to-pytorch.html#cb78-6" tabindex="-1"></a></span>
+<span id="cb78-7"><a href="introduction-to-pytorch.html#cb78-7" tabindex="-1"></a>learning_rate <span class="op">=</span> <span class="fl">1e-2</span>  <span class="co"># Learning rate</span></span>
+<span id="cb78-8"><a href="introduction-to-pytorch.html#cb78-8" tabindex="-1"></a>history <span class="op">=</span> []</span>
+<span id="cb78-9"><a href="introduction-to-pytorch.html#cb78-9" tabindex="-1"></a>x_f <span class="op">=</span> <span class="dv">4</span>  <span class="co"># Target value</span></span>
+<span id="cb78-10"><a href="introduction-to-pytorch.html#cb78-10" tabindex="-1"></a></span>
+<span id="cb78-11"><a href="introduction-to-pytorch.html#cb78-11" tabindex="-1"></a></span>
+<span id="cb78-12"><a href="introduction-to-pytorch.html#cb78-12" tabindex="-1"></a><span class="co"># We will run gradient descent for a number of iterations. At each iteration, we compute the loss,</span></span>
+<span id="cb78-13"><a href="introduction-to-pytorch.html#cb78-13" tabindex="-1"></a><span class="co">#   compute the derivative of the loss with respect to x, and perform the update.</span></span>
+<span id="cb78-14"><a href="introduction-to-pytorch.html#cb78-14" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">500</span>):</span>
+<span id="cb78-15"><a href="introduction-to-pytorch.html#cb78-15" tabindex="-1"></a>    x <span class="op">=</span> torch.tensor([x], requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb78-16"><a href="introduction-to-pytorch.html#cb78-16" tabindex="-1"></a></span>
+<span id="cb78-17"><a href="introduction-to-pytorch.html#cb78-17" tabindex="-1"></a>    <span class="co"># </span><span class="al">TODO</span><span class="co">: Compute the loss as the square of the difference between x and x_f</span></span>
+<span id="cb78-18"><a href="introduction-to-pytorch.html#cb78-18" tabindex="-1"></a>    loss <span class="op">=</span> <span class="co"># </span><span class="al">TODO</span></span>
+<span id="cb78-19"><a href="introduction-to-pytorch.html#cb78-19" tabindex="-1"></a></span>
+<span id="cb78-20"><a href="introduction-to-pytorch.html#cb78-20" tabindex="-1"></a>    <span class="co"># Backpropagate through the loss to compute gradients</span></span>
+<span id="cb78-21"><a href="introduction-to-pytorch.html#cb78-21" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb78-22"><a href="introduction-to-pytorch.html#cb78-22" tabindex="-1"></a></span>
+<span id="cb78-23"><a href="introduction-to-pytorch.html#cb78-23" tabindex="-1"></a>    <span class="co"># Update x with gradient descent</span></span>
+<span id="cb78-24"><a href="introduction-to-pytorch.html#cb78-24" tabindex="-1"></a>    x <span class="op">=</span> x.item() <span class="op">-</span> learning_rate <span class="op">*</span> x.grad</span>
+<span id="cb78-25"><a href="introduction-to-pytorch.html#cb78-25" tabindex="-1"></a></span>
+<span id="cb78-26"><a href="introduction-to-pytorch.html#cb78-26" tabindex="-1"></a>    history.append(x.item())</span>
+<span id="cb78-27"><a href="introduction-to-pytorch.html#cb78-27" tabindex="-1"></a></span>
+<span id="cb78-28"><a href="introduction-to-pytorch.html#cb78-28" tabindex="-1"></a><span class="co"># Plot the evolution of x as we optimize toward x_f</span></span>
+<span id="cb78-29"><a href="introduction-to-pytorch.html#cb78-29" tabindex="-1"></a>plt.plot(history)</span>
+<span id="cb78-30"><a href="introduction-to-pytorch.html#cb78-30" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">500</span>], [x_f, x_f])</span>
+<span id="cb78-31"><a href="introduction-to-pytorch.html#cb78-31" tabindex="-1"></a>plt.legend((<span class="st">&#39;Predicted&#39;</span>, <span class="st">&#39;True&#39;</span>))</span>
+<span id="cb78-32"><a href="introduction-to-pytorch.html#cb78-32" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;Iteration&#39;</span>)</span>
+<span id="cb78-33"><a href="introduction-to-pytorch.html#cb78-33" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;x value&#39;</span>)</span>
+<span id="cb78-34"><a href="introduction-to-pytorch.html#cb78-34" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<div class="sourceCode" id="cb79"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb79-1"><a href="introduction-to-pytorch.html#cb79-1" tabindex="-1"></a><span class="co"># Initialize a random value for our intial x</span></span>
+<span id="cb79-2"><a href="introduction-to-pytorch.html#cb79-2" tabindex="-1"></a>x <span class="op">=</span> torch.randn(<span class="dv">1</span>)</span>
+<span id="cb79-3"><a href="introduction-to-pytorch.html#cb79-3" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;Initializing x=</span><span class="sc">{</span>x<span class="sc">.</span>item()<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## Initializing x=1.479282259941101</code></pre>
+<div class="sourceCode" id="cb81"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb81-1"><a href="introduction-to-pytorch.html#cb81-1" tabindex="-1"></a>learning_rate <span class="op">=</span> <span class="fl">1e-2</span>  <span class="co"># Learning rate</span></span>
+<span id="cb81-2"><a href="introduction-to-pytorch.html#cb81-2" tabindex="-1"></a>history <span class="op">=</span> []</span>
+<span id="cb81-3"><a href="introduction-to-pytorch.html#cb81-3" tabindex="-1"></a>x_f <span class="op">=</span> <span class="dv">4</span>  <span class="co"># Target value</span></span>
+<span id="cb81-4"><a href="introduction-to-pytorch.html#cb81-4" tabindex="-1"></a></span>
+<span id="cb81-5"><a href="introduction-to-pytorch.html#cb81-5" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">500</span>):</span>
+<span id="cb81-6"><a href="introduction-to-pytorch.html#cb81-6" tabindex="-1"></a>    x <span class="op">=</span> torch.tensor([x], requires_grad<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb81-7"><a href="introduction-to-pytorch.html#cb81-7" tabindex="-1"></a></span>
+<span id="cb81-8"><a href="introduction-to-pytorch.html#cb81-8" tabindex="-1"></a>    <span class="co"># Compute the loss as the square of the difference between x and x_f</span></span>
+<span id="cb81-9"><a href="introduction-to-pytorch.html#cb81-9" tabindex="-1"></a>    loss <span class="op">=</span> (x<span class="op">-</span>x_f) <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb81-10"><a href="introduction-to-pytorch.html#cb81-10" tabindex="-1"></a></span>
+<span id="cb81-11"><a href="introduction-to-pytorch.html#cb81-11" tabindex="-1"></a>    <span class="co"># Backpropagate through the loss to compute gradients</span></span>
+<span id="cb81-12"><a href="introduction-to-pytorch.html#cb81-12" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb81-13"><a href="introduction-to-pytorch.html#cb81-13" tabindex="-1"></a></span>
+<span id="cb81-14"><a href="introduction-to-pytorch.html#cb81-14" tabindex="-1"></a>    <span class="co"># Update x with gradient descent</span></span>
+<span id="cb81-15"><a href="introduction-to-pytorch.html#cb81-15" tabindex="-1"></a>    x <span class="op">=</span> x.item() <span class="op">-</span> learning_rate <span class="op">*</span> x.grad</span>
+<span id="cb81-16"><a href="introduction-to-pytorch.html#cb81-16" tabindex="-1"></a></span>
+<span id="cb81-17"><a href="introduction-to-pytorch.html#cb81-17" tabindex="-1"></a>    history.append(x.item())</span>
+<span id="cb81-18"><a href="introduction-to-pytorch.html#cb81-18" tabindex="-1"></a></span>
+<span id="cb81-19"><a href="introduction-to-pytorch.html#cb81-19" tabindex="-1"></a><span class="co"># Plot the evolution of x as we optimize toward x_f</span></span>
+<span id="cb81-20"><a href="introduction-to-pytorch.html#cb81-20" tabindex="-1"></a>plt.plot(history)</span>
+<span id="cb81-21"><a href="introduction-to-pytorch.html#cb81-21" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">500</span>], [x_f, x_f])</span>
+<span id="cb81-22"><a href="introduction-to-pytorch.html#cb81-22" tabindex="-1"></a>plt.legend((<span class="st">&#39;Predicted&#39;</span>, <span class="st">&#39;True&#39;</span>))</span>
+<span id="cb81-23"><a href="introduction-to-pytorch.html#cb81-23" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;Iteration&#39;</span>)</span>
+<span id="cb81-24"><a href="introduction-to-pytorch.html#cb81-24" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;x value&#39;</span>)</span>
+<span id="cb81-25"><a href="introduction-to-pytorch.html#cb81-25" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+</div>
+<p>Now, we have covered the fundamental concepts of PyTorch - tensors, operations, neural networks, and automatic differentiation.</p>
+
+</div>
+</div>
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  if (t = document.getElementById("webex-total_correct")) {
+    var correct = document.getElementsByClassName("webex-correct").length;
+    var solvemes = document.getElementsByClassName("webex-solveme").length;
+    var radiogroups = document.getElementsByClassName("webex-radiogroup").length;
+    var selects = document.getElementsByClassName("webex-select").length;
+    
+    t.innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+  
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+  
+  var cl = this.classList
+  
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+  
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+  
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+  
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+  }
+  
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+  
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+  }
+
+  update_total_correct();
+}
+
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="exercise-2-german-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exercise-3-dividend-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["main.pdf", "main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"info": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

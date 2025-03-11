@@ -1,0 +1,11 @@
+welcome-to-dmml-lab-8
+implementing-neural-networks-in-r
+exercise-1-task-2-in-lecture-notes
+exercise-2-german-data
+introduction-to-pytorch
+install-pytorch
+what-is-pytorch
+basic-computations-on-tensors
+neural-networks-in-pytorch
+automatic-differentiation-in-pytorch
+exercise-3-dividend-data
