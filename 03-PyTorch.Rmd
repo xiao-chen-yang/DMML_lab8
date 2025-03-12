@@ -309,7 +309,7 @@ In PyTorch, [`torch.autograd`](https://pytorch.org/docs/stable/autograd.html) is
 
 We will use the PyTorch [`.backward()`](https://pytorch.org/docs/stable/generated/torch.Tensor.backward.html) method to trace operations for computing gradients. On a tensor, the [`requires_grad`](https://pytorch.org/docs/stable/generated/torch.Tensor.requires_grad_.html) attribute controls whether autograd should record operations on that tensor. When a forward pass is made through the network, PyTorch records all the operations that occur; then, to compute the gradient, the `backward()` method is called to perform backpropagation.
 
-Let's compute the gradient of $ y = x^2 $:
+Let's compute the gradient of $y = x^2$:
 
 ```{python}
 ### Gradient computation
@@ -325,7 +325,7 @@ print("dy_dx of y=x^2 at x=3.0 is: ", dy_dx)
 assert dy_dx == 6.0
 ```
 
-In training neural networks, we use differentiation and stochastic gradient descent (SGD) to optimise a loss function. Now that we have a sense of how PyTorch's autograd can be used to compute and access derivatives, we will look at an example where we use automatic differentiation and SGD to find the minimum of $ L=(x-x_f)^2 $. Here $x_f$ is a variable for a desired value we are trying to optimize for; $L$ represents a loss that we are trying to minimize. While we can clearly solve this problem analytically ($ x_{min}=x_f $), considering how we can compute this using PyTorch's autograd sets us up nicely for future activities where we use gradient descent to optimise entire neural network losses.
+In training neural networks, we use differentiation and stochastic gradient descent (SGD) to optimise a loss function. Now that we have a sense of how PyTorch's autograd can be used to compute and access derivatives, we will look at an example where we use automatic differentiation and SGD to find the minimum of $L=(x-x_f)^2$. Here $x_f$ is a variable for a desired value we are trying to optimize for; $L$ represents a loss that we are trying to minimize. While we can clearly solve this problem analytically ($x_{min}=x_f$), considering how we can compute this using PyTorch's autograd sets us up nicely for future activities where we use gradient descent to optimise entire neural network losses.
 
 ```{python eval=FALSE}
 ### Function minimization with autograd and gradient descent
